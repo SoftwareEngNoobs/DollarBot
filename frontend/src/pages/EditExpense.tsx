@@ -26,6 +26,8 @@ import {
   NumberInputField,
   NumberInputRoot,
 } from "../components/ui/number-input";
+import type { DatePickerProps } from 'antd';
+import { DatePicker, Space } from 'antd';
 
 const EditExpense = () => {
   const {
@@ -49,9 +51,9 @@ const EditExpense = () => {
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
-          Edit Description
+          Edit Date
         </Text>
-        <Input
+        {/* <Input
           id="description"
           marginBottom="10px"
           placeholder="Enter Description"
@@ -59,7 +61,8 @@ const EditExpense = () => {
             required: "This is required",
             minLength: { value: 3, message: "Minimum length should be 3" },
           })}
-        />
+        /> */}
+        <DatePicker size="large" style={{"width":"100%", "marginBottom":"10px"}} />
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Edit Category
         </Text>

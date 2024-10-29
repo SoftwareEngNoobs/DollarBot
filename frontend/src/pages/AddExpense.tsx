@@ -22,6 +22,8 @@ import { useForm } from "react-hook-form";
 import { FaDollarSign } from "react-icons/fa";
 import { FaEuroSign } from "react-icons/fa";
 import { FaIndianRupeeSign } from "react-icons/fa6";
+import type { DatePickerProps } from 'antd';
+import { DatePicker, Space } from 'antd';
 import {
   NumberInputField,
   NumberInputRoot,
@@ -46,9 +48,9 @@ const AddExpense = () => {
       </Center>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
-          Description
+          Date
         </Text>
-        <Input
+        {/* <Input
           id="description"
           marginBottom="10px"
           placeholder="Enter Description"
@@ -56,12 +58,14 @@ const AddExpense = () => {
             required: "This is required",
             minLength: { value: 3, message: "Minimum length should be 3" },
           })}
-        />
+        /> */}
+        <DatePicker size="large" style={{"width":"100%", "marginBottom":"10px"}} />
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Category
         </Text>
         <Input
           id="category"
+          colorPalette="whiteAlpha"
           marginBottom="10px"
           placeholder="Enter Category"
           {...register("category", {

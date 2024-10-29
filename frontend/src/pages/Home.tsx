@@ -57,26 +57,26 @@ const Home = () => {
 
   const rows = items.map((item) => (
     <Table.Row
-      key={item.name}
-      data-selected={selection.includes(item.name) ? "" : undefined}
+      key={item.date}
+      data-selected={selection.includes(item.date) ? "" : undefined}
     >
       <Table.Cell>
         <Checkbox
           top="1"
           aria-label="Select row"
-          checked={selection.includes(item.name)}
+          checked={selection.includes(item.date)}
           onCheckedChange={(changes) => {
             setSelection((prev) =>
               changes.checked
-                ? [...prev, item.name]
-                : selection.filter((name) => name !== item.name)
+                ? [...prev, item.date]
+                : selection.filter((date) => date !== item.date)
             );
           }}
         />
       </Table.Cell>
-      <Table.Cell>{item.name}</Table.Cell>
+      <Table.Cell>{item.date}</Table.Cell>
       <Table.Cell>{item.category}</Table.Cell>
-      <Table.Cell>${item.price}</Table.Cell>
+      <Table.Cell>${item.expense}</Table.Cell>
     </Table.Row>
   ));
 
@@ -183,19 +183,19 @@ const Home = () => {
                     }
                     onCheckedChange={(changes) => {
                       setSelection(
-                        changes.checked ? items.map((item) => item.name) : []
+                        changes.checked ? items.map((item) => item.date) : []
                       );
                     }}
                   />
                 </Table.ColumnHeader>
                 <Table.ColumnHeader fontWeight="extrabold">
-                  Product
+                  Date
                 </Table.ColumnHeader>
                 <Table.ColumnHeader fontWeight="extrabold">
                   Category
                 </Table.ColumnHeader>
                 <Table.ColumnHeader fontWeight="extrabold">
-                  Price
+                  Expense
                 </Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
@@ -208,11 +208,11 @@ const Home = () => {
 };
 
 const items = [
-  { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-  { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-  { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-  { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-  { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
+  { id: 1, date: "2023-11-10", category: "Electronics", expense: 999.99 },
+  { id: 2, date: "2023-11-16", category: "Home Appliances", expense: 49.99 },
+  { id: 3, date: "2023-11-21", category: "Furniture", expense: 150.0 },
+  { id: 4, date: "2023-12-10", category: "Electronics", expense: 799.99 },
+  { id: 5, date: "2024-01-05", category: "Accessories", expense: 199.99 },
 ];
 
 const frameworks = createListCollection({
