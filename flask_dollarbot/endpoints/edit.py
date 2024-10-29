@@ -58,7 +58,7 @@ def edit_cost():
     helper.write_json(user_list)
     print(f"Final update {user_list}")
 
-    return jsonify({'message': 'Cost updated succxessfully'}), 200
+    return jsonify({'message': 'Cost updated successfully'}), 200
 
 
 @edit_bp.route('/edit_date', methods=['POST'])
