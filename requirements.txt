@@ -10,3 +10,5 @@ pytest
 python-telegram-bot-calendar
 mock
 tabulate
+django
+flask
