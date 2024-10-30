@@ -13,7 +13,8 @@ def build_dictionary(expense_record):
     return {
         "expense_date" : expense_details[0],
         "expense_category" : expense_details[1],
-        "expense_amount": expense_details[2]
+        "expense_amount": expense_details[2],
+        "expense_currency": expense_details[3]
     }
         
 
