@@ -18,6 +18,7 @@ import {
   createListCollection,
   Kbd,
   Box,
+  ListCollection,
 } from "@chakra-ui/react";
 import { Field } from "../components/ui/field";
 import { Checkbox } from "../components/ui/checkbox";
@@ -35,48 +36,86 @@ import React from "react";
 import AddExpense from "./AddExpense";
 import EditExpense from "./EditExpense";
 import DeleteExpense from "./DeleteExpense";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Home = () => {
   const [visible, setVisible] = useState(false);
   const [selection, setSelection] = useState<string[]>([]);
   const [action, setAction] = useState<string>("add");
+  const [expenses, setExpenses] = useState([{}]);
+
+  const handleExpense = (value: boolean) => {
+    if (value) {
+      var newData: any[] = [];
+      axios
+        .get("http://127.0.0.1:5000/display/864914213")
+        .then(function (resp) {
+          for (let i = 0; i < resp.data.length; i++) {
+            const expenseData = {
+              expense_amount: resp.data[i]["expense_amount"],
+              expense_category: resp.data[i]["expense_category"],
+              expense_date: resp.data[i]["expense_date"],
+            };
+            newData.push(expenseData);
+          }
+          setExpenses(newData);
+        });
+    }
+  };
+
+  useEffect(() => {
+    var newData: any[] = [];
+    axios.get("http://127.0.0.1:5000/display/864914213").then(function (resp) {
+      for (let i = 0; i < resp.data.length; i++) {
+        const expenseData = {
+          expense_amount: resp.data[i]["expense_amount"],
+          expense_category: resp.data[i]["expense_category"],
+          expense_date: resp.data[i]["expense_date"],
+        };
+        newData.push(expenseData);
+      }
+      setExpenses(newData);
+      console.log(newData);
+    });
+  }, []);
 
   const hasSelection = selection.length > 0;
-  const indeterminate = hasSelection && selection.length < items.length;
+  const indeterminate = hasSelection && selection.length < expenses.length;
 
   const renderSwitch = (action: string) => {
     switch (action) {
       case "add":
-        return <AddExpense />;
+        return <AddExpense onAddExpense={handleExpense} />;
       case "edit":
-        return <EditExpense />;
+        return <EditExpense onEditExpense={handleExpense} />;
       case "delete":
-        return <DeleteExpense />;
+        return <DeleteExpense onDeleteExpense={handleExpense} />;
     }
   };
 
-  const rows = items.map((item) => (
+  const rows = expenses.map((item: any) => (
     <Table.Row
-      key={item.date}
-      data-selected={selection.includes(item.date) ? "" : undefined}
+      key={item["expense_date"]}
+      data-selected={selection.includes(item["expense_date"]) ? "" : undefined}
     >
       <Table.Cell>
         <Checkbox
           top="1"
           aria-label="Select row"
-          checked={selection.includes(item.date)}
+          checked={selection.includes(item["expense_date"])}
           onCheckedChange={(changes) => {
             setSelection((prev) =>
               changes.checked
-                ? [...prev, item.date]
-                : selection.filter((date) => date !== item.date)
+                ? [...prev, item["expense_date"]]
+                : selection.filter((date) => date !== item["expense_date"])
             );
           }}
         />
       </Table.Cell>
-      <Table.Cell>{item.date}</Table.Cell>
-      <Table.Cell>{item.category}</Table.Cell>
-      <Table.Cell>${item.expense}</Table.Cell>
+      <Table.Cell>{item["expense_date"]}</Table.Cell>
+      <Table.Cell>{item["expense_category"]}</Table.Cell>
+      <Table.Cell>{item["expense_amount"]}</Table.Cell>
     </Table.Row>
   ));
 
@@ -139,7 +178,7 @@ const Home = () => {
           <Flex flexDir="column">
             <Container color="white" background="black">
               <SelectRoot
-                collection={frameworks}
+                collection={actions}
                 size="sm"
                 width="320px"
                 defaultValue={["add"]}
@@ -152,9 +191,9 @@ const Home = () => {
                   <SelectValueText color="teal" placeholder="Select Action" />
                 </SelectTrigger>
                 <SelectContent>
-                  {frameworks.items.map((movie) => (
-                    <SelectItem color="teal" item={movie} key={movie.value}>
-                      {movie.label}
+                  {actions.items.map((action) => (
+                    <SelectItem color="teal" item={action} key={action.value}>
+                      {action.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -171,7 +210,7 @@ const Home = () => {
             </Box>
             {renderSwitch(action)}
           </Flex>
-          <Table.Root borderRadius="xl" size="md">
+          <Table.Root borderRadius="xl" size="md" width="400px">
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeader w="6">
@@ -183,7 +222,7 @@ const Home = () => {
                     }
                     onCheckedChange={(changes) => {
                       setSelection(
-                        changes.checked ? items.map((item) => item.date) : []
+                        changes.checked ? expenses.map((item:any) => item["expense_date"]) : []
                       );
                     }}
                   />
@@ -207,15 +246,7 @@ const Home = () => {
   );
 };
 
-const items = [
-  { id: 1, date: "2023-11-10", category: "Electronics", expense: 999.99 },
-  { id: 2, date: "2023-11-16", category: "Home Appliances", expense: 49.99 },
-  { id: 3, date: "2023-11-21", category: "Furniture", expense: 150.0 },
-  { id: 4, date: "2023-12-10", category: "Electronics", expense: 799.99 },
-  { id: 5, date: "2024-01-05", category: "Accessories", expense: 199.99 },
-];
-
-const frameworks = createListCollection({
+const actions = createListCollection({
   items: [
     { label: "Add", value: "add" },
     { label: "Edit", value: "edit" },

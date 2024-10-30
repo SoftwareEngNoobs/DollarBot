@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Center,
   Container,
@@ -22,27 +22,51 @@ import { useForm } from "react-hook-form";
 import { FaDollarSign } from "react-icons/fa";
 import { FaEuroSign } from "react-icons/fa";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
+import type { DatePickerProps } from "antd";
+import { DatePicker, Space } from "antd";
 import {
   NumberInputField,
   NumberInputRoot,
 } from "../components/ui/number-input";
+import axios from "axios";
 
-const AddExpense = () => {
+type Props = {
+  onAddExpense?: (value: boolean) => void;
+};
+
+const AddExpense = ({ onAddExpense }: Props) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+  const [expDate, setExpDate] = useState("");
 
-  function onSubmit(values: any) {
-    console.log("Hi");
+  async function onSubmit(data: any) {
+    if (expDate != "") {
+      axios.post(
+        "http://127.0.0.1:5000/add/add_single",
+        {
+          user_id: "864914213",
+          amount: data.expenseValue,
+          date: expDate,
+          category: data.expense_category,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+    await new Promise(r => setTimeout(r, 2000));
+    onAddExpense?.(true);
   }
+
   return (
     <Container>
       <Center>
-        <Heading fontWeight="bold" marginBottom="15px">
+        <Heading fontWeight="bold" marginBottom="8px">
           Add Expenses
         </Heading>
       </Center>
@@ -50,16 +74,13 @@ const AddExpense = () => {
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Date
         </Text>
-        {/* <Input
-          id="description"
-          marginBottom="10px"
-          placeholder="Enter Description"
-          {...register("description", {
-            required: "This is required",
-            minLength: { value: 3, message: "Minimum length should be 3" },
-          })}
-        /> */}
-        <DatePicker size="large" style={{"width":"100%", "marginBottom":"10px"}} />
+        <DatePicker
+          size="large"
+          style={{ width: "100%", marginBottom: "10px" }}
+          onChange={(dateStrings) => {
+            setExpDate(String(dateStrings.format("YYYY-MM-DD")));
+          }}
+        />
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Category
         </Text>
@@ -68,7 +89,7 @@ const AddExpense = () => {
           colorPalette="whiteAlpha"
           marginBottom="10px"
           placeholder="Enter Category"
-          {...register("category", {
+          {...register("expense_category", {
             required: "This is required",
             minLength: { value: 3, message: "Minimum length should be 3" },
           })}
@@ -96,17 +117,11 @@ const AddExpense = () => {
               ))}
             </SelectContent>
           </SelectRoot>
-          {/* <Input
-            id="expenseValue"
-            size="sm"
-            placeholder="Enter Expense Value"
-          /> */}
           <NumberInputRoot
             size="md"
             defaultValue="0"
             marginBottom="10px"
             min={0}
-            max={50}
             height="100%"
           >
             <NumberInputField

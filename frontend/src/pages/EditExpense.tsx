@@ -29,7 +29,11 @@ import {
 import type { DatePickerProps } from 'antd';
 import { DatePicker, Space } from 'antd';
 
-const EditExpense = () => {
+type Props = {
+    onEditExpense?: (value: boolean) => void;
+  };
+
+const EditExpense = ({onEditExpense}: Props) => {
   const {
     handleSubmit,
     register,
@@ -37,6 +41,7 @@ const EditExpense = () => {
   } = useForm();
 
   function onSubmit(values: any) {
+    onEditExpense?.(true);
     console.log("Hi");
   }
   return (

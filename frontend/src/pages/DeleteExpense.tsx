@@ -27,7 +27,13 @@ import {
   NumberInputRoot,
 } from "../components/ui/number-input";
 
-const DeleteExpense = () => {
+
+type Props = {
+    onDeleteExpense?: (value: boolean) => void;
+  };
+
+
+const DeleteExpense = ({onDeleteExpense}: Props) => {
   const {
     handleSubmit,
     register,
@@ -35,6 +41,7 @@ const DeleteExpense = () => {
   } = useForm();
 
   function onSubmit(values: any) {
+    onDeleteExpense?.(true);
     console.log("Hi");
   }
   return (
