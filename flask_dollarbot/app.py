@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from endpoints.add import add_bp
 from endpoints.edit import edit_bp
 from endpoints.delete import delete_bp
+from endpoints.display import display_bp
+from endpoints.category import category_bp
 # from endpoints.add_recurring import add_recurring_bp
 
 app = Flask(__name__)
@@ -10,6 +12,8 @@ app = Flask(__name__)
 app.register_blueprint(add_bp, url_prefix='/add')
 app.register_blueprint(edit_bp)
 app.register_blueprint(delete_bp)
+app.register_blueprint(display_bp, url_prefix='/display')
+app.register_blueprint(category_bp, url_prefix='/category')
 # app.register_blueprint(add_recurring_bp)
 @app.route('/')
 def home():
