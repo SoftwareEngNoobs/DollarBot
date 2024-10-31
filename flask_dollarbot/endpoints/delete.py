@@ -69,7 +69,7 @@ def delete_all():
 @delete_bp.route('/deletebyids', methods=['DELETE'])
 def delete_by_ids():
     """
-    Delete all records for a user.
+    Delete all records for a user based on the ids.
     Request JSON format:
     {
         "user_id": "864914211",
