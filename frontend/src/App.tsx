@@ -9,7 +9,6 @@ import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 
 const history = createMemoryHistory();
-
 function App() {
   return (
     <Provider>

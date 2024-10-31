@@ -40,6 +40,7 @@ type expenseProps = {
   expense_date: string;
   expense_category: string;
   expense_amount: string;
+  expense_currency: string;
 };
 
 const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
@@ -62,6 +63,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
     expense_amount: "0",
     expense_category: "",
     expense_date: `${year}-${month}-${day}`,
+    expense_currency: "dollar",
   });
 
   async function onSubmit(data: any) {
@@ -69,7 +71,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
       await axios.post(
         "http://127.0.0.1:5000/edit_cost",
         {
-          user_id: "864914213",
+          user_id: localStorage.getItem("globalUserId"),
           new_cost: expenseValue,
           selected_data: [
             "Date=" + oldData.expense_date,
@@ -86,7 +88,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
       await axios.post(
         "http://127.0.0.1:5000/edit_date",
         {
-          user_id: "864914213",
+          user_id: localStorage.getItem("globalUserId"),
           new_date: expDate,
           selected_data: [
             "Date=" + oldData.expense_date,
@@ -103,7 +105,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
       await axios.post(
         "http://127.0.0.1:5000/edit_category",
         {
-          user_id: "864914213",
+          user_id: localStorage.getItem("globalUserId"),
           new_category: expenseCategory,
           selected_data: [
             "Date=" + oldData.expense_date,
@@ -119,30 +121,38 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
       );
     }
     setOldData({
-        expense_amount:expenseValue,
-        expense_category:expenseCategory,
-        expense_date:expDate
-    })
+      expense_amount: expenseValue,
+      expense_category: expenseCategory,
+      expense_date: expDate,
+      expense_currency: oldData.expense_currency,
+    });
     await new Promise((r) => setTimeout(r, 2000));
     onEditExpense?.(true);
+    window.location.reload();
   }
 
   useEffect(() => {
     if (selectedExpense.length == 1) {
       axios
-        .get("http://127.0.0.1:5000/display/864914213")
+        .get(
+          `http://127.0.0.1:5000/display/${localStorage.getItem(
+            "globalUserId"
+          )}`
+        )
         .then(function (resp) {
           for (let i = 0; i < resp.data.length; i++) {
             var expenseData: expenseProps = {
               expense_amount: "0",
               expense_category: "",
               expense_date: `${year}-${month}-${day}`,
+              expense_currency: "dollar",
             };
             if (i == parseInt(selectedExpense[0])) {
               expenseData = {
                 expense_amount: resp.data[i]["expense_amount"],
                 expense_category: resp.data[i]["expense_category"],
                 expense_date: resp.data[i]["expense_date"],
+                expense_currency: resp.data[i]["expense_currency"],
               };
               if (selectedExpense.length == 1) {
                 setOldData(expenseData);
@@ -206,7 +216,8 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
             width="65px"
             variant="subtle"
             margin="0 5px 0px 0"
-            defaultValue={["dollar"]}
+            value={[oldData.expense_currency.trim()]}
+            disabled
           >
             <SelectTrigger>
               <SelectValueText color="teal" placeholder="Select Action" />

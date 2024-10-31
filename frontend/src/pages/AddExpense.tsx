@@ -41,16 +41,19 @@ const AddExpense = ({ onAddExpense }: Props) => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [expDate, setExpDate] = useState("");
+  const [selectedCurrency, setSelectedCurrency] = useState("dollar");
 
   async function onSubmit(data: any) {
+    console.log(localStorage.getItem("globalUserId"));
     if (expDate != "") {
       axios.post(
         "http://127.0.0.1:5000/add/add_single",
         {
-          user_id: "864914213",
+          user_id: localStorage.getItem("globalUserId"),
           amount: data.expenseValue,
           date: expDate,
           category: data.expense_category,
+          currency: selectedCurrency,
         },
         {
           headers: {
@@ -59,8 +62,9 @@ const AddExpense = ({ onAddExpense }: Props) => {
         }
       );
     }
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 2000));
     onAddExpense?.(true);
+    window.location.reload();
   }
 
   return (
@@ -105,6 +109,7 @@ const AddExpense = ({ onAddExpense }: Props) => {
             variant="subtle"
             margin="0 5px 0px 0"
             defaultValue={["dollar"]}
+            onValueChange={(value)=>{setSelectedCurrency(value.value[0])}}
           >
             <SelectTrigger>
               <SelectValueText color="teal" placeholder="Select Action" />
