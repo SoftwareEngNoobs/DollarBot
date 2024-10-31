@@ -1,28 +1,16 @@
-import { Button } from "../components/ui/button";
 import {
-  Card,
   Container,
   AbsoluteCenter,
-  HStack,
-  Input,
-  Stack,
-  Center,
   Flex,
   Text,
   Link,
   Table,
-  ActionBarContent,
-  ActionBarRoot,
-  ActionBarSelectionTrigger,
-  ActionBarSeparator,
   createListCollection,
   Kbd,
   Box,
   ListCollection,
 } from "@chakra-ui/react";
-import { Field } from "../components/ui/field";
 import { Checkbox } from "../components/ui/checkbox";
-import { PasswordInput } from "../components/ui/password-input";
 import { useState } from "react";
 import {
   SelectContent,
@@ -38,22 +26,51 @@ import EditExpense from "./EditExpense";
 import DeleteExpense from "./DeleteExpense";
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+function retCurrencySymbol(currency: string) {
+  var result = "";
+  switch (currency) {
+    case "dollar":
+      result = "$";
+      break;
+    case "euro":
+      result = "€";
+      break;
+    case "rupee":
+      result = "₹";
+      break;
+    default:
+      return "$";
+  }
+  return result;
+}
 
 const Home = () => {
-  const [visible, setVisible] = useState(false);
   const [selection, setSelection] = useState<string[]>([]);
   const [action, setAction] = useState<string>("add");
   const [expenses, setExpenses] = useState([{}]);
+  let navigate = useNavigate();
+
+  if (localStorage.getItem("globalUserId") === null) {
+    navigate("/signin");
+  }
 
   const handleExpense = (value: boolean) => {
     if (value) {
       var newData: any[] = [];
       axios
-        .get("http://127.0.0.1:5000/display/864914213")
+        .get(
+          `http://127.0.0.1:5000/display/${localStorage.getItem(
+            "globalUserId"
+          )}`
+        )
         .then(function (resp) {
           for (let i = 0; i < resp.data.length; i++) {
-            const expenseData = {
-              expense_amount: resp.data[i]["expense_amount"],
+            var expenseData = {
+              expense_amount:
+                retCurrencySymbol(resp.data[i]["expense_currency"].trim()) +
+                resp.data[i]["expense_amount"],
               expense_category: resp.data[i]["expense_category"],
               expense_date: resp.data[i]["expense_date"],
             };
@@ -66,18 +83,24 @@ const Home = () => {
 
   useEffect(() => {
     var newData: any[] = [];
-    axios.get("http://127.0.0.1:5000/display/864914213").then(function (resp) {
-      for (let i = 0; i < resp.data.length; i++) {
-        const expenseData = {
-          id: i,
-          expense_amount: resp.data[i]["expense_amount"],
-          expense_category: resp.data[i]["expense_category"],
-          expense_date: resp.data[i]["expense_date"],
-        };
-        newData.push(expenseData);
-      }
-      setExpenses(newData);
-    });
+    axios
+      .get(
+        `http://127.0.0.1:5000/display/${localStorage.getItem("globalUserId")}`
+      )
+      .then(function (resp) {
+        for (let i = 0; i < resp.data.length; i++) {
+          var expenseData = {
+            id: i,
+            expense_amount:
+              retCurrencySymbol(resp.data[i]["expense_currency"].trim()) +
+              resp.data[i]["expense_amount"],
+            expense_category: resp.data[i]["expense_category"],
+            expense_date: resp.data[i]["expense_date"],
+          };
+          newData.push(expenseData);
+        }
+        setExpenses(newData);
+      });
   }, [selection]);
 
   const hasSelection = selection.length > 0;
@@ -88,17 +111,24 @@ const Home = () => {
       case "add":
         return <AddExpense onAddExpense={handleExpense} />;
       case "edit":
-        return <EditExpense onEditExpense={handleExpense} selectedExpense={selection}/>;
+        return (
+          <EditExpense
+            onEditExpense={handleExpense}
+            selectedExpense={selection}
+          />
+        );
       case "delete":
-        return <DeleteExpense onDeleteExpense={handleExpense} selectedExpense={selection}/>;
+        return (
+          <DeleteExpense
+            onDeleteExpense={handleExpense}
+            selectedExpense={selection}
+          />
+        );
     }
   };
 
   const rows = expenses.map((item: any) => (
-    <Table.Row
-      key={item["id"]}
-      //   data-selected={selection.includes(item["expense_date"]) ? "" : undefined}
-    >
+    <Table.Row key={item["id"]}>
       <Table.Cell>
         <Checkbox
           top="1"
@@ -137,6 +167,9 @@ const Home = () => {
             href="/"
             fontWeight="medium"
             margin="18px 35px 0 0"
+            onClick={() => {
+              localStorage.clear();
+            }}
           >
             Log Out
           </Link>
@@ -253,7 +286,6 @@ const actions = createListCollection({
     { label: "Add", value: "add" },
     { label: "Edit", value: "edit" },
     { label: "Delete", value: "delete" },
-    { label: "View", value: "view" },
   ],
 });
 

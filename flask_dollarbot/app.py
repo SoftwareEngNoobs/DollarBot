@@ -47,9 +47,6 @@ app.register_blueprint(display_bp, url_prefix='/display')
 app.register_blueprint(category_bp, url_prefix='/category')
 app.register_blueprint(auth_bp)
 # app.register_blueprint(add_recurring_bp)
-@app.route('/')
-def home():
-    return render_template('index.html')
        
 if __name__ == '__main__':
     app.run(debug=True)

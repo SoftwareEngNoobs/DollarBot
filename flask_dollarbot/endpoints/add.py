@@ -54,8 +54,9 @@ def add_single():
     )
     user_list = helper.read_json()
     if str(chat_id) not in user_list:
-        user_list[str(chat_id)] = helper.createNewUserRecord()
-    user_list[str(chat_id)]["data"].append("{},{},{}, {}".format(date_str, category_str, amount_str, expense_currency))
+        user_list[str(chat_id)] = {"data": [], "budget": {"overall": "0", "category": None}}
+    record = "{},{},{}, {}".format(date_str, category_str, amount_str, expense_currency)
+    user_list[str(chat_id)]["data"].append(record)
     helper.write_json(user_list)
     return jsonify({'message': 'Expense record created successfully'}), 200
     

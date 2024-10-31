@@ -40,17 +40,19 @@ def edit_cost():
         return jsonify({'error': 'Invalid amount'}), 400
 
     for i in range(len(data_edit)):
+        print(data_edit[i])
         user_data = data_edit[i].split(",")
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
+        selected_currency = user_data[3]
        
         if (
             user_data[0] == selected_date and
             user_data[1] == selected_category and
             user_data[2] == selected_amount
         ):
-            data_edit[i] = f"{selected_date},{selected_category},{new_cost}"
+            data_edit[i] = f"{selected_date},{selected_category},{new_cost},{selected_currency}"
             print(f"data edit i {data_edit[i]}")
             break
 
@@ -97,14 +99,15 @@ def edit_date():
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
+        selected_currency = user_data[3]
 
         if (
             user_data[0] == selected_date and
             user_data[1] == selected_category and
             user_data[2] == selected_amount
         ):
-            new_date_formatted = datetime.strptime(new_date, '%d-%b-%Y').strftime(helper.getDateFormat())
-            data_edit[i] = f"{new_date_formatted},{selected_category},{selected_amount}"
+            new_date_formatted = datetime.strptime(new_date, '%Y-%m-%d').date()
+            data_edit[i] = f"{new_date_formatted},{selected_category},{selected_amount},{selected_currency}"
             break
 
     user_list[str(chat_id)]["data"] = data_edit
@@ -149,13 +152,14 @@ def edit_category():
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
+        selected_currency = user_data[3]
 
         if (
             user_data[0] == selected_date and
             user_data[1] == selected_category and
             user_data[2] == selected_amount
         ):
-            data_edit[i] = f"{selected_date},{new_category},{selected_amount}"
+            data_edit[i] = f"{selected_date},{new_category},{selected_amount},{selected_currency}"
             break
 
     user_list[str(chat_id)]["data"] = data_edit

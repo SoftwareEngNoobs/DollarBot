@@ -44,7 +44,7 @@ const DeleteExpense = ({ onDeleteExpense, selectedExpense }: Props) => {
     if (selectedExpense.length >= 1) {
       await axios.delete("http://127.0.0.1:5000/deletebyids", {
         data: {
-          user_id: "864914213",
+          user_id: localStorage.getItem("globalUserId"),
           ids_to_delete: selectedExpense,
         },
       });

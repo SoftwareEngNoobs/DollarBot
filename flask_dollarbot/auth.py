@@ -25,7 +25,7 @@ def register_user():
     new_user = User(username=data['username'], password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({'message': 'User registered successfully'}), 201
+    return jsonify({'message': 'User registered successfully', 'user_id':new_user.user_id}), 201
 
 @auth_bp.route('/login', methods=['POST'])
 def login_user_endpoint():
@@ -34,14 +34,12 @@ def login_user_endpoint():
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({'message': 'Login failed'}), 401
 
-    login_user(user)
-    return jsonify({'message': 'Login successful'}), 200
+    return jsonify({'message': 'Login successful', 'user_id':user.user_id}), 200
 
 @auth_bp.route('/logout', methods=['GET'])
 @login_required
 def logout_user_endpoint():
     session.clear()  # Clear session data
-    logout_user()
     return jsonify({'message': 'Logged out successfully'}), 200
 
 @auth_bp.route('/protected', methods=['GET'])
