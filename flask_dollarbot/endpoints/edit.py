@@ -33,8 +33,7 @@ def edit_cost():
         return jsonify({'error': 'Invalid input'}), 400
 
     user_list = helper.read_json()
-    chat_id = user_id
-    data_edit = helper.getUserHistory(chat_id)
+    data_edit = helper.getUserHistory(user_id)
    
     if helper.validate_entered_amount(new_cost) == 0:
         return jsonify({'error': 'Invalid amount'}), 400
@@ -54,7 +53,7 @@ def edit_cost():
             print(f"data edit i {data_edit[i]}")
             break
 
-    user_list[str(chat_id)]["data"] = data_edit
+    user_list[str(user_id)]["data"] = data_edit
     helper.write_json(user_list)
     print(f"Final update {user_list}")
 

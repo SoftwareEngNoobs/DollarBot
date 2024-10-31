@@ -29,8 +29,7 @@ def display_user_expense_history(user_id=None):
         return jsonify({'error': 'Bad Request'}), 400
     
     helper.read_json()
-    chat_id = user_id
-    history = helper.getUserHistory(chat_id)
+    history = helper.getUserHistory(user_id)
     print(history)
     if history is None:
         # no spending history for user

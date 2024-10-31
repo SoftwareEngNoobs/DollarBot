@@ -37,13 +37,13 @@ def add_single():
     }
     """
     data = request.get_json()
-    chat_id = data['user_id']
+    user_id = data['user_id']
     expense_date = data['date']
     expense_category = data['category']
     expense_amount = data['amount']
     expense_currency = str(data['currency'])
 
-    if not validate_add_request(chat_id, expense_date, expense_amount, expense_category):
+    if not validate_add_request(user_id, expense_date, expense_amount, expense_category):
         return jsonify({'error': 'Bad Request'}), 400
     
 
@@ -53,9 +53,9 @@ def add_single():
         str(expense_amount),
     )
     user_list = helper.read_json()
-    if str(chat_id) not in user_list:
-        user_list[str(chat_id)] = helper.createNewUserRecord()
-    user_list[str(chat_id)]["data"].append("{},{},{}, {}".format(date_str, category_str, amount_str, expense_currency))
+    if str(user_id) not in user_list:
+        user_list[str(user_id)] = helper.createNewUserRecord()
+    user_list[str(user_id)]["data"].append("{},{},{}, {}".format(date_str, category_str, amount_str, expense_currency))
     helper.write_json(user_list)
     return jsonify({'message': 'Expense record created successfully'}), 200
     
