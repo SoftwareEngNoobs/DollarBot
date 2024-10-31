@@ -85,6 +85,8 @@ def delete_by_ids():
 
     if not user_id:
         return jsonify({'error': 'User ID is required'}), 400
+    if not ids_to_delete:
+        return jsonify({'error': 'Ids to delete is required'}), 400
 
     user_list = helper.read_json()
     if str(user_id) in user_list:
