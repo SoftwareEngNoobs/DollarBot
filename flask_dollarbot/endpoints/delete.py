@@ -9,13 +9,11 @@ delete_bp = Blueprint('delete', __name__)
 def delete_by_date():
     """
     Delete records for a specific date.
-
     Request JSON format:
     {
         "user_id": "864914211",
         "date": "17-May-2023"
     }
-
     Returns:
         JSON response indicating success or failure.
     """
@@ -45,12 +43,10 @@ def delete_by_date():
 def delete_all():
     """
     Delete all records for a user.
-
     Request JSON format:
     {
         "user_id": "864914211"
     }
-
     Returns:
         JSON response indicating success or failure.
     """
@@ -65,6 +61,37 @@ def delete_all():
         user_list[str(user_id)]["data"] = []
         user_list[str(user_id)]["budget"]["overall"] = "0"
         user_list[str(user_id)]["budget"]["category"] = {}
+        helper.write_json(user_list)
+
+    return jsonify({'message': 'All records deleted successfully'}), 200
+
+
+@delete_bp.route('/deletebyids', methods=['DELETE'])
+def delete_by_ids():
+    """
+    Delete all records for a user based on the ids.
+    Request JSON format:
+    {
+        "user_id": "864914211",
+        "ids_to_delete":[0,1,4,6],
+    }
+    Returns:
+        JSON response indicating success or failure.
+    """
+    data = request.json
+    user_id = data.get('user_id')
+    ids_to_delete=data.get("ids_to_delete")
+    ids_to_delete.sort(reverse=True)
+
+    if not user_id:
+        return jsonify({'error': 'User ID is required'}), 400
+    if not ids_to_delete:
+        return jsonify({'error': 'Ids to delete is required'}), 400
+
+    user_list = helper.read_json()
+    if str(user_id) in user_list:
+        for i in ids_to_delete:
+            del user_list[str(user_id)]["data"][i]
         helper.write_json(user_list)
 
     return jsonify({'message': 'All records deleted successfully'}), 200
