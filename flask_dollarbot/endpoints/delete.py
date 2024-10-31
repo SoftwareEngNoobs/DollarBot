@@ -27,7 +27,7 @@ def delete_by_date():
         return jsonify({'error': 'Invalid input'}), 400
 
     # Get user history and filter records based on the date
-    records_to_delete = helper.getUserHistoryByDate(user_id, date_str)
+    records_to_delete = helper.get_user_history_by_date(user_id, date_str)
     if not records_to_delete:
         return jsonify({'message': f'No transactions found for {date_str}'}), 404
 

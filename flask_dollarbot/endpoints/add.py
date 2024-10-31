@@ -11,7 +11,7 @@ def validate_add_request(chat_id, expense_date, expense_amount, expense_category
         return False
     if datetime.strptime(expense_date, '%Y-%m-%d').today().date() > datetime.today().date():
         return False 
-    if expense_category not in helper.getSpendCategories():
+    if expense_category not in helper.get_spend_categories():
         return False
     if helper.validate_entered_amount(expense_amount) == 0:
         return False 
@@ -54,7 +54,7 @@ def add_single():
     )
     user_list = helper.read_json()
     if str(user_id) not in user_list:
-        user_list[str(user_id)] = helper.createNewUserRecord()
+        user_list[str(user_id)] = helper.create_new_user_record()
     user_list[str(user_id)]["data"].append("{},{},{}, {}".format(date_str, category_str, amount_str, expense_currency))
     helper.write_json(user_list)
     return jsonify({'message': 'Expense record created successfully'}), 200

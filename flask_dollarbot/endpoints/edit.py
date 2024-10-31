@@ -33,7 +33,7 @@ def edit_cost():
         return jsonify({'error': 'Invalid input'}), 400
 
     user_list = helper.read_json()
-    data_edit = helper.getUserHistory(user_id)
+    data_edit = helper.get_user_history(user_id)
    
     if helper.validate_entered_amount(new_cost) == 0:
         return jsonify({'error': 'Invalid amount'}), 400
@@ -89,7 +89,7 @@ def edit_date():
 
     user_list = helper.read_json()
     chat_id = user_id
-    data_edit = helper.getUserHistory(chat_id)
+    data_edit = helper.get_user_history(chat_id)
 
     for i in range(len(data_edit)):
         user_data = data_edit[i].split(",")
@@ -102,7 +102,7 @@ def edit_date():
             user_data[1] == selected_category and
             user_data[2] == selected_amount
         ):
-            new_date_formatted = datetime.strptime(new_date, '%d-%b-%Y').strftime(helper.getDateFormat())
+            new_date_formatted = datetime.strptime(new_date, '%d-%b-%Y').strftime(helper.get_date_format())
             data_edit[i] = f"{new_date_formatted},{selected_category},{selected_amount}"
             break
 
@@ -141,7 +141,7 @@ def edit_category():
 
     user_list = helper.read_json()
     chat_id = user_id
-    data_edit = helper.getUserHistory(chat_id)
+    data_edit = helper.get_user_history(chat_id)
 
     for i in range(len(data_edit)):
         user_data = data_edit[i].split(",")

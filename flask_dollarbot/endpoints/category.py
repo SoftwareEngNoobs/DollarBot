@@ -7,7 +7,7 @@ category_bp = Blueprint('category', __name__)
 def category_get_or_create_or_delete():
     if request.method == 'GET':
         # display all available categories 
-        return helper.getSpendCategories(), 200
+        return helper.get_spend_categories(), 200
     if request.method == 'POST':
         """
             Create a new category. 
@@ -23,7 +23,7 @@ def category_get_or_create_or_delete():
         new_category = data["category_name"]
         # TODO update the budget for the new category as well, once the new budget api is created 
         helper.addSpendCategories(new_category)
-        return helper.getSpendCategories(), 201
+        return helper.get_spend_categories(), 201
     if request.method == 'DELETE':
         """
             Delete an existing category. 
@@ -36,7 +36,7 @@ def category_get_or_create_or_delete():
         # TODO update this with budget deletion logic once those APIs are in place 
         data = request.get_json()
         category_to_be_deleted = data["category_name"]
-        categories = helper.getSpendCategories()
+        categories = helper.get_spend_categories()
         if category_to_be_deleted not in categories:
             return jsonify({"error": "Category not found"}), 404
         helper.deleteSpendCategories(category_to_be_deleted)
@@ -58,10 +58,10 @@ def update_category():
     selected_category = data["existing_category_name"]
     new_category = data["new_category_name"]
     # TODO update with budget logic once basic APIs are setup 
-    categories = helper.getSpendCategories()
+    categories = helper.get_spend_categories()
     if selected_category not in categories:
         return jsonify({"error": "Category not found"}), 404
     helper.deleteSpendCategories(selected_category)
     helper.addSpendCategories(new_category)
-    return helper.getSpendCategories(), 200
+    return helper.get_spend_categories(), 200
     

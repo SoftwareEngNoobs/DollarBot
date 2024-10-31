@@ -134,41 +134,41 @@ def validate_entered_duration(duration_entered):
             return str(duration)
     return 0
 
-def getUserHistory(chat_id):
+def get_user_history(chat_id):
     """
     getUserHistory(chat_id): Takes 1 argument chat_id and uses this to get the relevant user's historical data.
     """
-    data = getUserData(chat_id)
+    data = get_user_data(chat_id)
     if data is not None:
         return data["data"]
     
     return None
 
-def getUserHistoryByCategory(chat_id, category):
-    data = getUserHistory(chat_id)
+def get_user_history_by_category(chat_id, category):
+    data = get_user_history(chat_id)
     previous_expenses = []
     for record in data:
         if f",{category}," in record:
             previous_expenses.append(record)
     return previous_expenses
 
-def getUserHistoryByDate(chat_id, date):
-    data = getUserHistory(chat_id)
+def get_user_history_by_date(chat_id, date):
+    data = get_user_history(chat_id)
     previous_expenses = []
     for record in data:
         if f"{date}," in record:
             previous_expenses.append(record)
     return previous_expenses
 
-def getUserHistoryDateExpense(chat_id):
-    data = getUserHistory(chat_id)
+def get_user_history_date_expense(chat_id):
+    data = get_user_history(chat_id)
     cat_spend_dict = {}
     for record in data:
         split_vals = record.split(",")
         cat_spend_dict[split_vals[0]] = split_vals[2]
     return cat_spend_dict
 
-def getUserData(chat_id):
+def get_user_data(chat_id):
     user_list = read_json()
     
     if user_list is None:
@@ -183,59 +183,59 @@ def throw_exception(e, message, bot, logging):
     logging.exception(str(e))
     bot.reply_to(message, "Oh no! " + str(e))
 
-def createNewUserRecord():
+def create_new_user_record():
     return data_format
 
-def getOverallBudget(chatId):
-    data = getUserData(chatId)
+def get_overall_budget(chatId):
+    data = get_user_data(chatId)
     if data is None or data == {}:
         return None
     return data["budget"]["overall"]
 
-def getCategoryBudget(chatId):
-    data = getUserData(chatId)
+def get_category_budget(chatId):
+    data = get_user_data(chatId)
     if data is None:
         return None
     return data["budget"]["category"]
 
-def getCategoryBudgetByCategory(chatId, cat):
-    if not isCategoryBudgetByCategoryAvailable(chatId, cat):
+def get_category_budget_by_category(chatId, cat):
+    if not is_category_budget_by_category_available(chatId, cat):
         return None
-    data = getCategoryBudget(chatId)
+    data = get_category_budget(chatId)
     return data[cat]
 
-def canAddBudget(chatId):
-    overall_budget = getOverallBudget(chatId)
-    category_budget = getCategoryBudget(chatId)
+def can_add_budget(chatId):
+    overall_budget = get_overall_budget(chatId)
+    category_budget = get_category_budget(chatId)
     return (overall_budget is None and overall_budget != '0') and (category_budget is None and category_budget != {})
 
-def isOverallBudgetAvailable(chatId):
-    overall_budget = getOverallBudget(chatId)
+def is_overall_budget_available(chatId):
+    overall_budget = get_overall_budget(chatId)
     if overall_budget is not None and overall_budget != '0':
         return True
     return False
 
-def isCategoryBudgetAvailable(chatId):
-    category_budget = getCategoryBudget(chatId)
+def is_category_budget_available(chatId):
+    category_budget = get_category_budget(chatId)
     if category_budget is not None and category_budget != {}:
         return True
     return False
 
-def isCategoryBudgetByCategoryAvailable(chatId, cat):
-    data = getCategoryBudget(chatId)
+def is_category_budget_by_category_available(chatId, cat):
+    data = get_category_budget(chatId)
     if data is None or data == {} or data == '0':
         return False
     return cat in data.keys()
 
-def isCategoryBudgetByCategoryNotZero(chatId):
+def is_category_budget_by_category_not_zero(chatId):
     for cat in spend_categories:
-        if getCategoryBudgetByCategory(chatId, cat) == '0':
+        if get_category_budget_by_category(chatId, cat) == '0':
             return False
     return True
 
 def get_uncategorized_amount(chatId, amount):
     overall_budget = float(amount)
-    category_budget_data = getCategoryBudget(chatId)
+    category_budget_data = get_category_budget(chatId)
     if category_budget_data is None or category_budget_data == {}:
         return amount
     category_budget = 0
@@ -249,7 +249,7 @@ def display_remaining_budget(message, bot):
 
 def display_remaining_overall_budget(message, bot):
     chat_id = message.chat.id
-    remaining_budget = calculateRemainingOverallBudget(chat_id)
+    remaining_budget = calculate_remaining_overall_budget(chat_id)
     if remaining_budget >= 0:
         msg = "\nRemaining Overall Budget is $" + str(remaining_budget)
     else:
@@ -258,10 +258,10 @@ def display_remaining_overall_budget(message, bot):
         )
     bot.send_message(chat_id, msg)
 
-def calculateRemainingOverallBudget(chat_id):
-    budget = getOverallBudget(chat_id)
-    history = getUserHistory(chat_id)
-    query = datetime.now().today().strftime(getMonthFormat())
+def calculate_remaining_overall_budget(chat_id):
+    budget = get_overall_budget(chat_id)
+    history = get_user_history(chat_id)
+    query = datetime.now().today().strftime(get_month_format())
     queryResult = [value for _, value in enumerate(history) if str(query) in value]
     if budget == None:
         return -calculate_total_spendings(queryResult)
@@ -275,17 +275,17 @@ def calculate_total_spendings(queryResult):
     return total
 
 
-def calculateRemainingCategoryBudget(chat_id, cat):
-    budget = getCategoryBudgetByCategory(chat_id, cat)
-    history = getUserHistory(chat_id)
-    query = datetime.now().today().strftime(getMonthFormat())
+def calculate_remaining_category_budget(chat_id, cat):
+    budget = get_category_budget_by_category(chat_id, cat)
+    history = get_user_history(chat_id)
+    query = datetime.now().today().strftime(get_month_format())
     queryResult = [value for _, value in enumerate(history) if str(query) in value]
     return float(budget) - calculate_total_spendings_for_category(queryResult, cat)
 
-def calculateRemainingCategoryBudgetPercent(chat_id, cat):
-    budget = getCategoryBudgetByCategory(chat_id, cat)
-    history = getUserHistory(chat_id)
-    query = datetime.now().today().strftime(getMonthFormat())
+def calculate_remaining_category_budget_percent(chat_id, cat):
+    budget = get_category_budget_by_category(chat_id, cat)
+    history = get_user_history(chat_id)
+    query = datetime.now().today().strftime(get_month_format())
     queryResult = [value for _, value in enumerate(history) if str(query) in value]
     if budget == '0':
         print("budget is zero")
@@ -301,29 +301,29 @@ def calculate_total_spendings_for_category(queryResult, cat):
     return total
 
 def calculate_total_spendings_for_category_chat_id(chat_id, cat):
-    history = getUserHistory(chat_id)
-    query = datetime.now().today().strftime(getMonthFormat())
+    history = get_user_history(chat_id)
+    query = datetime.now().today().strftime(get_month_format())
     print(query)
     queryResult = [value for _, value in enumerate(history) if str(query) in value]
     return calculate_total_spendings_for_category(queryResult, cat)
 
-def updateBudgetCategory(chatId, category):
+def update_budget_category(chatId, category):
     user_list = read_json()
     user_list[str(chatId)]["budget"]["category"][category] = str(0)
     write_json(user_list)
 
-def deleteBudgetCategory(chatId, category):
+def delete_budget_category(chatId, category):
     user_list = read_json()
     user_list[str(chatId)]["budget"]["category"].pop(category, None)
     write_json(user_list)
 
-def getAvailableCategories(history):
+def get_available_categories(history):
     available_categories = set()
     for record in history:
         available_categories.add(record.split(',')[1])
     return available_categories
 
-def getCategoryWiseSpendings(available_categories, history):
+def get_category_wise_spendings(available_categories, history):
     category_wise_history = {}
     for cat in available_categories:
         for record in history:
@@ -334,7 +334,7 @@ def getCategoryWiseSpendings(available_categories, history):
                     category_wise_history[cat] = [record]
     return category_wise_history
 
-def getFormattedPredictions(category_predictions):
+def get_formatted_predictions(category_predictions):
     category_budgets = ""
     for key,value in category_predictions.items():
         if type(value) == float:
@@ -346,7 +346,7 @@ def getFormattedPredictions(category_predictions):
     predicted_budget += category_budgets
     return predicted_budget
 
-def getSpendCategories():
+def get_spend_categories():
     """
     getSpendCategories(): This functions returns the spend categories used in the bot. These are defined the same file.
     """
@@ -358,7 +358,7 @@ def getSpendCategories():
 
     return spend_cat
 
-def deleteSpendCategories(category):
+def delete_spend_categories(category):
     category_list = read_category_json()
     if category_list is None:
         return None
@@ -369,7 +369,7 @@ def deleteSpendCategories(category):
     category_list["categories"] = result
     write_category_json(category_list)
 
-def addSpendCategories(category):
+def add_spend_categories(category):
     category_list = read_category_json()
     if category_list is None:
         return None
@@ -380,50 +380,50 @@ def addSpendCategories(category):
     category_list["categories"] = result
     write_category_json(category_list)
 
-def getSpendDisplayOptions():
+def get_spend_display_options():
     """
     getSpendDisplayOptions(): This functions returns the spend display options used in the bot. These are defined the same file.
     """
     return spend_display_option
 
-def getSpendEstimateOptions():
+def get_spend_estimate_options():
     return spend_estimate_option
 
-def getCommands():
+def get_commands():
     """
     getCommands(): This functions returns the command options used in the bot. These are defined the same file.
     """
     return commands
 
-def getDateFormat():
+def get_date_format():
     """
     getCommands(): This functions returns the command options used in the bot. These are defined the same file.
     """
     return dateFormat
 
-def getTimeFormat():
+def get_time_format():
     """
     def getTimeFormat(): This functions returns the time format used in the bot.
     """
     return timeFormat
 
-def getMonthFormat():
+def get_month_format():
     """
     def getMonthFormat(): This functions returns the month format used in the bot.
     """
     return monthFormat
 
-def getChoices():
+def get_choices():
     return choices
 
-def getBudgetOptions():
+def get_budget_options():
     return budget_options
 
-def getBudgetTypes():
+def get_budget_types():
     return budget_types
 
-def getUpdateOptions():
+def get_update_options():
     return update_options
 
-def getAnalyticsOptions():
+def get_analytics_options():
     return analytics_options
