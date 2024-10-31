@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Center,
   Container,
@@ -26,24 +26,38 @@ import {
   NumberInputField,
   NumberInputRoot,
 } from "../components/ui/number-input";
-
+import axios from "axios";
 
 type Props = {
-    onDeleteExpense?: (value: boolean) => void;
-  };
+  onDeleteExpense?: (value: boolean) => void;
+  selectedExpense: string[];
+};
 
-
-const DeleteExpense = ({onDeleteExpense}: Props) => {
+const DeleteExpense = ({ onDeleteExpense, selectedExpense }: Props) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  function onSubmit(values: any) {
+  async function onSubmit(values: any) {
+    if (selectedExpense.length >= 1) {
+      await axios.delete("http://127.0.0.1:5000/deletebyids", {
+        data: {
+          user_id: "864914213",
+          ids_to_delete: selectedExpense,
+        },
+      });
+    }
+    await new Promise((r) => setTimeout(r, 2000));
     onDeleteExpense?.(true);
-    console.log("Hi");
+    window.location.reload();
   }
+
+  useEffect(() => {
+    console.log("Updated List");
+  }, [selectedExpense]);
+
   return (
     <Container>
       <Center>
@@ -62,34 +76,5 @@ const DeleteExpense = ({onDeleteExpense}: Props) => {
     </Container>
   );
 };
-
-const frameworks = createListCollection({
-  items: [
-    {
-      label: (
-        <Icon>
-          <FaDollarSign />
-        </Icon>
-      ),
-      value: "dollar",
-    },
-    {
-      label: (
-        <Icon>
-          <FaEuroSign />
-        </Icon>
-      ),
-      value: "euro",
-    },
-    {
-      label: (
-        <Icon>
-          <FaIndianRupeeSign />
-        </Icon>
-      ),
-      value: "rupee",
-    },
-  ],
-});
 
 export default DeleteExpense;

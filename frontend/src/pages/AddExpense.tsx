@@ -99,7 +99,7 @@ const AddExpense = ({ onAddExpense }: Props) => {
         </Text>
         <Flex flexDir="row">
           <SelectRoot
-            collection={frameworks}
+            collection={currencies}
             size="md"
             width="65px"
             variant="subtle"
@@ -110,9 +110,9 @@ const AddExpense = ({ onAddExpense }: Props) => {
               <SelectValueText color="teal" placeholder="Select Action" />
             </SelectTrigger>
             <SelectContent>
-              {frameworks.items.map((movie) => (
-                <SelectItem color="teal" item={movie} key={movie.value}>
-                  {movie.label}
+              {currencies.items.map((currency) => (
+                <SelectItem color="teal" item={currency} key={currency.value}>
+                  {currency.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -139,7 +139,7 @@ const AddExpense = ({ onAddExpense }: Props) => {
   );
 };
 
-const frameworks = createListCollection({
+const currencies = createListCollection({
   items: [
     {
       label: (

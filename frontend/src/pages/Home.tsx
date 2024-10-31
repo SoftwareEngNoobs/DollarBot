@@ -69,6 +69,7 @@ const Home = () => {
     axios.get("http://127.0.0.1:5000/display/864914213").then(function (resp) {
       for (let i = 0; i < resp.data.length; i++) {
         const expenseData = {
+          id: i,
           expense_amount: resp.data[i]["expense_amount"],
           expense_category: resp.data[i]["expense_category"],
           expense_date: resp.data[i]["expense_date"],
@@ -76,9 +77,8 @@ const Home = () => {
         newData.push(expenseData);
       }
       setExpenses(newData);
-      console.log(newData);
     });
-  }, []);
+  }, [selection]);
 
   const hasSelection = selection.length > 0;
   const indeterminate = hasSelection && selection.length < expenses.length;
@@ -88,27 +88,27 @@ const Home = () => {
       case "add":
         return <AddExpense onAddExpense={handleExpense} />;
       case "edit":
-        return <EditExpense onEditExpense={handleExpense} />;
+        return <EditExpense onEditExpense={handleExpense} selectedExpense={selection}/>;
       case "delete":
-        return <DeleteExpense onDeleteExpense={handleExpense} />;
+        return <DeleteExpense onDeleteExpense={handleExpense} selectedExpense={selection}/>;
     }
   };
 
   const rows = expenses.map((item: any) => (
     <Table.Row
-      key={item["expense_date"]}
-      data-selected={selection.includes(item["expense_date"]) ? "" : undefined}
+      key={item["id"]}
+      //   data-selected={selection.includes(item["expense_date"]) ? "" : undefined}
     >
       <Table.Cell>
         <Checkbox
           top="1"
           aria-label="Select row"
-          checked={selection.includes(item["expense_date"])}
+          checked={selection.includes(item["id"])}
           onCheckedChange={(changes) => {
             setSelection((prev) =>
               changes.checked
-                ? [...prev, item["expense_date"]]
-                : selection.filter((date) => date !== item["expense_date"])
+                ? [...prev, item["id"]]
+                : selection.filter((date) => date !== item["id"])
             );
           }}
         />
@@ -222,7 +222,9 @@ const Home = () => {
                     }
                     onCheckedChange={(changes) => {
                       setSelection(
-                        changes.checked ? expenses.map((item:any) => item["expense_date"]) : []
+                        changes.checked
+                          ? expenses.map((item: any) => item["id"])
+                          : []
                       );
                     }}
                   />

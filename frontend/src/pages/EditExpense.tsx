@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Center,
   Container,
@@ -26,24 +26,140 @@ import {
   NumberInputField,
   NumberInputRoot,
 } from "../components/ui/number-input";
-import type { DatePickerProps } from 'antd';
-import { DatePicker, Space } from 'antd';
+import type { DatePickerProps } from "antd";
+import { DatePicker, Space } from "antd";
+import axios from "axios";
+import dayjs from "dayjs";
 
 type Props = {
-    onEditExpense?: (value: boolean) => void;
-  };
+  onEditExpense?: (value: boolean) => void;
+  selectedExpense: string[];
+};
 
-const EditExpense = ({onEditExpense}: Props) => {
+type expenseProps = {
+  expense_date: string;
+  expense_category: string;
+  expense_amount: string;
+};
+
+const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  function onSubmit(values: any) {
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+
+  const [expDate, setExpDate] = useState(`${year}-${month}-${day}`);
+  const [expenseValue, setExpenseValue] = useState("0");
+  const [expenseCategory, setExpenseCategory] = useState("");
+  const [oldData, setOldData] = useState<expenseProps>({
+    expense_amount: "0",
+    expense_category: "",
+    expense_date: `${year}-${month}-${day}`,
+  });
+
+  async function onSubmit(data: any) {
+    if (selectedExpense.length == 1) {
+      await axios.post(
+        "http://127.0.0.1:5000/edit_cost",
+        {
+          user_id: "864914213",
+          new_cost: expenseValue,
+          selected_data: [
+            "Date=" + oldData.expense_date,
+            "Category=" + oldData.expense_category,
+            "Amount=" + oldData.expense_amount,
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      await axios.post(
+        "http://127.0.0.1:5000/edit_date",
+        {
+          user_id: "864914213",
+          new_date: expDate,
+          selected_data: [
+            "Date=" + oldData.expense_date,
+            "Category=" + oldData.expense_category,
+            "Amount=" + oldData.expense_amount,
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      await axios.post(
+        "http://127.0.0.1:5000/edit_category",
+        {
+          user_id: "864914213",
+          new_category: expenseCategory,
+          selected_data: [
+            "Date=" + oldData.expense_date,
+            "Category=" + oldData.expense_category,
+            "Amount=" + oldData.expense_amount,
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+    setOldData({
+        expense_amount:expenseValue,
+        expense_category:expenseCategory,
+        expense_date:expDate
+    })
+    await new Promise((r) => setTimeout(r, 2000));
     onEditExpense?.(true);
-    console.log("Hi");
   }
+
+  useEffect(() => {
+    if (selectedExpense.length == 1) {
+      axios
+        .get("http://127.0.0.1:5000/display/864914213")
+        .then(function (resp) {
+          for (let i = 0; i < resp.data.length; i++) {
+            var expenseData: expenseProps = {
+              expense_amount: "0",
+              expense_category: "",
+              expense_date: `${year}-${month}-${day}`,
+            };
+            if (i == parseInt(selectedExpense[0])) {
+              expenseData = {
+                expense_amount: resp.data[i]["expense_amount"],
+                expense_category: resp.data[i]["expense_category"],
+                expense_date: resp.data[i]["expense_date"],
+              };
+              if (selectedExpense.length == 1) {
+                setOldData(expenseData);
+                setExpenseValue(expenseData.expense_amount);
+                setExpenseCategory(expenseData.expense_category);
+                setExpDate(expenseData.expense_date);
+              }
+            }
+          }
+        });
+    } else {
+      setExpDate(`${year}-${month}-${day}`);
+      setExpenseCategory("");
+      setExpenseValue("0");
+    }
+  }, [selectedExpense]);
+
   return (
     <Container>
       <Center>
@@ -58,16 +174,16 @@ const EditExpense = ({onEditExpense}: Props) => {
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Edit Date
         </Text>
-        {/* <Input
-          id="description"
-          marginBottom="10px"
-          placeholder="Enter Description"
-          {...register("description", {
-            required: "This is required",
-            minLength: { value: 3, message: "Minimum length should be 3" },
-          })}
-        /> */}
-        <DatePicker size="large" style={{"width":"100%", "marginBottom":"10px"}} />
+        <DatePicker
+          size="large"
+          value={dayjs(expDate, "YYYY-MM-DD")}
+          style={{ width: "100%", marginBottom: "10px" }}
+          onChange={(dateStrings) => {
+            if (dateStrings != null) {
+              setExpDate(String(dateStrings.format("YYYY-MM-DD")));
+            }
+          }}
+        />
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Edit Category
         </Text>
@@ -75,17 +191,17 @@ const EditExpense = ({onEditExpense}: Props) => {
           id="category"
           marginBottom="10px"
           placeholder="Enter Category"
-          {...register("category", {
-            required: "This is required",
-            minLength: { value: 3, message: "Minimum length should be 3" },
-          })}
+          value={expenseCategory}
+          onChange={(e: any) => {
+            setExpenseCategory(String(e.target.value));
+          }}
         />
         <Text fontSize="sm" fontWeight="medium" marginBottom="2px">
           Edit Expense Value
         </Text>
         <Flex flexDir="row">
           <SelectRoot
-            collection={frameworks}
+            collection={currencies}
             size="md"
             width="65px"
             variant="subtle"
@@ -96,31 +212,24 @@ const EditExpense = ({onEditExpense}: Props) => {
               <SelectValueText color="teal" placeholder="Select Action" />
             </SelectTrigger>
             <SelectContent>
-              {frameworks.items.map((movie) => (
-                <SelectItem color="teal" item={movie} key={movie.value}>
-                  {movie.label}
+              {currencies.items.map((currency) => (
+                <SelectItem color="teal" item={currency} key={currency.value}>
+                  {currency.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </SelectRoot>
-          {/* <Input
-            id="expenseValue"
-            size="sm"
-            placeholder="Enter Expense Value"
-          /> */}
           <NumberInputRoot
             size="md"
             defaultValue="0"
             marginBottom="10px"
             min={0}
-            max={50}
             height="100%"
+            onValueChange={({ value }) => {
+              setExpenseValue(value);
+            }}
           >
-            <NumberInputField
-              {...register("expenseValue", {
-                required: "This is required",
-              })}
-            />
+            <NumberInputField value={expenseValue} />
           </NumberInputRoot>
         </Flex>
         <Button mt={4} colorScheme="teal" loading={isSubmitting} type="submit">
@@ -131,7 +240,7 @@ const EditExpense = ({onEditExpense}: Props) => {
   );
 };
 
-const frameworks = createListCollection({
+const currencies = createListCollection({
   items: [
     {
       label: (
