@@ -49,6 +49,7 @@ commands = {
     "weekly": "This option is to get the weekly analysis report of the expenditure",
     "monthly": "This option is to get the monthly analysis report of the expenditure",
     "sendEmail": "Send an email with an attachment showing your history",
+    "reqUserID": "Request the UserID to import data into our web-app"
 }
 
 dateFormat = "%d-%b-%Y"
