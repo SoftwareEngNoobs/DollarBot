@@ -40,9 +40,14 @@ jobs:
       run: |
         pip install pylint
 
-    - name: Run pylint
+    - name: Run pylint with updated configuration
       run: |
-        pylint -r y flask_dollarbot/endpoints/   flask_dollarbot/tests 
+        # Adding configuration adjustments directly in the run command to avoid config warnings
+        echo "[MESSAGES CONTROL]" > .pylintrc
+        echo "disable=long-suffix,old-ne-operator,old-octal-literal,non-ascii-bytes-literal,eq-without-hash" >> .pylintrc
+        echo "[EXCEPTIONS]" >> .pylintrc
+        echo "overgeneral-exceptions=builtins.BaseException,builtins.Exception" >> .pylintrc
+        pylint -r y flask_dollarbot/endpoints/ flask_dollarbot/tests --rcfile=.pylintrc
 
     - name: Test with pytest in dollarbot root
       env:
