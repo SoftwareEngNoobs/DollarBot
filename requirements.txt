@@ -28,3 +28,4 @@ flake8
 fpdf
 coverage
 pytest-mock
+flask
