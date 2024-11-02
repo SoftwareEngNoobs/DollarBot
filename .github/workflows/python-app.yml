@@ -60,7 +60,7 @@ jobs:
         coverage run -m pytest test/
 
     - name: Test with pytest in flask_dollarbot root
-      working-directory: dollarbot/flask_dollarbot
+      working-directory: flask_dollarbot
       env:
         PYTHONPATH: ${{ github.workspace }}/dollarbot:$(pwd)/DollarBot  # Set PYTHONPATH for flask_dollarbot root
       run: |
