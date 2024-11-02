@@ -18,3 +18,7 @@ requests==2.31.0
 sqlparse==0.5.1
 tzdata==2024.2
 urllib3==2.2.1
+mock
+matplotlib
+pyTelegramBotAPI
+tabulate
