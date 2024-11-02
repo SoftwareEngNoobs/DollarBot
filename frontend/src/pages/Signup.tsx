@@ -10,6 +10,8 @@ import {
   Flex,
   Text,
   Link,
+  Icon,
+  Heading,
 } from "@chakra-ui/react";
 import { Field } from "../components/ui/field";
 import { PasswordInput } from "../components/ui/password-input";
@@ -17,6 +19,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Tooltip } from "../components/ui/tooltip";
+import { FaInfoCircle } from "react-icons/fa";
 
 const Signup = () => {
   const {
@@ -25,6 +29,7 @@ const Signup = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const [visible, setVisible] = useState(false);
+  const [importing, setImporting] = useState(true);
   let navigate = useNavigate();
 
   async function onSubmit(data: any) {
@@ -34,6 +39,7 @@ const Signup = () => {
         {
           username: data.username,
           password: data.password,
+          user_id: data.user_id
         },
         {
           headers: {
@@ -42,7 +48,6 @@ const Signup = () => {
         }
       )
       .then((resp) => {
-        console.log(resp.data.user_id);
         localStorage.setItem("globalUserId", resp.data.user_id);
         navigate("/home");
       })
@@ -126,11 +131,32 @@ const Signup = () => {
                 >
                   Already Have An Account?
                 </Link>
+                <Flex>
+                  <Link
+                    colorScheme="teal"
+                    fontSize="sm"
+                    fontWeight="medium"
+                    onClick={() => {
+                      setImporting(!importing);
+                    }}
+                    margin="0 10px 0 0"
+                  >
+                    Importing Data from Telegram?
+                  </Link>
+                  <Tooltip content={<><Text fontSize="md" fontWeight="bold" justifyContent="center">How to fetch your UserID from Dollar Bot?</Text><br/>1. To find your UserID go to the telegram chat with Dollar Bot. <br/> 2. Type the command <strong>/reqUserID</strong> and copy-paste the contents of the reply in the userID field to import your data! </>} interactive>
+                    <Icon padding="3px 0 0 0">
+                      <FaInfoCircle />
+                    </Icon>
+                  </Tooltip>
+                </Flex>
+                <Field label="Enter userID" hidden={importing}>
+                  <Input hidden={importing} {...register("user_id")} />
+                </Field>
               </Stack>
             </Card.Body>
             <Card.Footer justifyContent="flex-end">
               <Button variant="solid" loading={isSubmitting} type="submit">
-                Sign in
+                Sign Up
               </Button>
             </Card.Footer>
           </Card.Root>

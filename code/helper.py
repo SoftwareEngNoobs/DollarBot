@@ -74,11 +74,12 @@ commands = {
     "weekly": "This option is to get the weekly analysis report of the expenditure",
     "monthly": "This option is to get the monthly analysis report of the expenditure",
     "sendEmail": "Send an email with an attachment showing your history",
+    "reqUserID": "Request the UserID to import data into our web-app"
 }
 
-dateFormat = "%d-%b-%Y"
+dateFormat = "%Y-%m-%d"
 timeFormat = "%H:%M"
-monthFormat = "%b-%Y"
+monthFormat = "%Y-%m"
 
 # === Documentation of helper.py ===
 
@@ -88,12 +89,12 @@ def read_json():
     read_json(): Function to load .json expense record data
     """
     try:
-        if not os.path.exists("expense_record.json"):
-            with open("expense_record.json", "w", encoding="utf-8") as json_file:
+        if not os.path.exists("./flask_dollarbot/expense_record.json"):
+            with open("./flask_dollarbot/expense_record.json", "w", encoding="utf-8") as json_file:
                 json_file.write("{}")
             return json.dumps("{}")
-        elif os.stat("expense_record.json").st_size != 0:
-            with open("expense_record.json", encoding="utf-8") as expense_record:
+        elif os.stat("./flask_dollarbot/expense_record.json").st_size != 0:
+            with open("./flask_dollarbot/expense_record.json", encoding="utf-8") as expense_record:
                 expense_record_data = json.load(expense_record)
             return expense_record_data
 
@@ -105,7 +106,7 @@ def write_json(user_list):
     write_json(user_list): Stores data into the datastore of the bot.
     """
     try:
-        with open("expense_record.json", "w", encoding="utf-8") as json_file:
+        with open("./flask_dollarbot/expense_record.json", "w", encoding="utf-8") as json_file:
             json.dump(user_list, json_file, ensure_ascii=False, indent=4)
     except FileNotFoundError:
         print("Sorry, the data file could not be found.")
