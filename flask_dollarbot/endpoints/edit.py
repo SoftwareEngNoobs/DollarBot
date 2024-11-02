@@ -38,7 +38,8 @@ def edit_cost():
    
     if helper.validate_entered_amount(new_cost) == 0:
         return jsonify({'error': 'Invalid amount'}), 400
-
+    if data_edit is None :
+        return jsonify({"error": "user is missing or invalid"}),400
     for i in range(len(data_edit)):
         print(data_edit[i])
         user_data = data_edit[i].split(",")
