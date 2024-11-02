@@ -50,19 +50,18 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const date = new Date();
+  var date = new Date();
+  const offset = date.getTimezoneOffset();
+  date = new Date(date.getTime() - offset * 60 * 1000);
+  var MyDateString: string = date.toISOString().split("T")[0];
 
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
-
-  const [expDate, setExpDate] = useState(`${year}-${month}-${day}`);
+  const [expDate, setExpDate] = useState(MyDateString);
   const [expenseValue, setExpenseValue] = useState("0");
   const [expenseCategory, setExpenseCategory] = useState("");
   const [oldData, setOldData] = useState<expenseProps>({
     expense_amount: "0",
     expense_category: "",
-    expense_date: `${year}-${month}-${day}`,
+    expense_date: MyDateString,
     expense_currency: "dollar",
   });
 
@@ -144,7 +143,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
             var expenseData: expenseProps = {
               expense_amount: "0",
               expense_category: "",
-              expense_date: `${year}-${month}-${day}`,
+              expense_date: MyDateString,
               expense_currency: "dollar",
             };
             if (i == parseInt(selectedExpense[0])) {
@@ -164,7 +163,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
           }
         });
     } else {
-      setExpDate(`${year}-${month}-${day}`);
+      setExpDate(MyDateString);
       setExpenseCategory("");
       setExpenseValue("0");
     }

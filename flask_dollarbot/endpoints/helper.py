@@ -52,9 +52,9 @@ commands = {
     "reqUserID": "Request the UserID to import data into our web-app"
 }
 
-dateFormat = "%d-%b-%Y"
+dateFormat = "%Y-%M-%d"
 timeFormat = "%H:%M"
-monthFormat = "%b-%Y"
+monthFormat = "%Y-%m"
 
 # === Documentation of helper.py ===
 
