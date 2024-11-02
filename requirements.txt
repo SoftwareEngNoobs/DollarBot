@@ -22,3 +22,4 @@ mock
 matplotlib
 pyTelegramBotAPI
 tabulate
+python-telegram-bot-calendar
