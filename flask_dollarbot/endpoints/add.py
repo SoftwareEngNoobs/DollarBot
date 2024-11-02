@@ -9,7 +9,7 @@ add_bp = Blueprint('add', __name__)
 def validate_add_request(chat_id, expense_date, expense_amount, expense_category):
     if not chat_id or not expense_date or not expense_category or not expense_amount:
         return False
-    if datetime.strptime(expense_date, '%Y-%m-%d').today().date() > datetime.today().date():
+    if datetime.strptime(expense_date, '%Y-%m-%d').date() > datetime.today().date():
         return False 
     if expense_category not in helper.getSpendCategories():
         return False
@@ -26,8 +26,8 @@ def add_single():
     {
         "user_id" : "864914211",
         "amount" : "25.0",
-        "date" : "17-May-2023",
-        "category" : "Grocery"
+        "date" : "2023-05-17",
+        "category" : "Groceries",
         "currency" : "$"
     }
 
