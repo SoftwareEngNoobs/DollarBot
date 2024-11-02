@@ -23,3 +23,8 @@ matplotlib
 pyTelegramBotAPI
 tabulate
 python-telegram-bot-calendar
+jproperties
+flake8
+fpdf
+coverage
+pytest-mock
