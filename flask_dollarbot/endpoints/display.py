@@ -10,11 +10,14 @@ def validate_display_request(user_id):
 
 def build_dictionary(expense_record):
     expense_details = expense_record.split(',')
+    expense_currency="dollar"
+    if len(expense_details)>=4:
+        expense_currency=expense_details[3]
     return {
         "expense_date" : expense_details[0],
         "expense_category" : expense_details[1],
         "expense_amount": expense_details[2],
-        "expense_currency": expense_details[3]
+        "expense_currency": expense_currency
     }
         
 

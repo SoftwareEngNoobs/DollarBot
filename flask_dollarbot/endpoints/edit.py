@@ -45,7 +45,10 @@ def edit_cost():
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
-        selected_currency = user_data[3]
+        if len(user_data)>=4:
+            selected_currency = user_data[3]
+        else:
+            selected_currency = "dollar"
        
         if (
             user_data[0] == selected_date and
@@ -99,7 +102,10 @@ def edit_date():
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
-        selected_currency = user_data[3]
+        if len(user_data)>=4:
+            selected_currency = user_data[3]
+        else:
+            selected_currency = "dollar"
 
         if (
             user_data[0] == selected_date and
@@ -152,7 +158,10 @@ def edit_category():
         selected_date = selected_data[0].split("=")[1]
         selected_category = selected_data[1].split("=")[1]
         selected_amount = selected_data[2].split("=")[1]
-        selected_currency = user_data[3]
+        if len(user_data)>=4:
+            selected_currency = user_data[3]
+        else:
+            selected_currency = "dollar"
 
         if (
             user_data[0] == selected_date and

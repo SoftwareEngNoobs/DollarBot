@@ -52,9 +52,9 @@ commands = {
     "reqUserID": "Request the UserID to import data into our web-app"
 }
 
-dateFormat = "%d-%b-%Y"
+dateFormat = "%Y-%M-%d"
 timeFormat = "%H:%M"
-monthFormat = "%b-%Y"
+monthFormat = "%Y-%m"
 
 # === Documentation of helper.py ===
 
@@ -64,6 +64,7 @@ def read_json():
     read_json(): Function to load .json expense record 
     """
     try:
+        print(os.stat("expense_record.json").st_size)
         if not os.path.exists("expense_record.json"):
             with open("expense_record.json", "w", encoding="utf-8") as json_file:
                 json_file.write("{}")
@@ -71,6 +72,7 @@ def read_json():
         elif os.stat("expense_record.json").st_size != 0:
             with open("expense_record.json", encoding="utf-8") as expense_record:
                 expense_record_data = json.load(expense_record)
+            print(expense_record_data)
             return expense_record_data
 
     except FileNotFoundError:
