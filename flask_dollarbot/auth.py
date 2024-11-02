@@ -39,8 +39,8 @@ def login_user_endpoint():
     user = User.query.filter_by(username=data['username']).first()
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({'message': 'Login failed'}), 401
-    if new_user.telegram_id!=None:
-        return jsonify({'message': 'User registered successfully', 'user_id':new_user.telegram_id}), 201
+    if user.telegram_id!=None:
+        return jsonify({'message': 'User registered successfully', 'user_id':user.telegram_id}), 201
     return jsonify({'message': 'Login successful', 'user_id':user.user_id}), 200
 
 @auth_bp.route('/logout', methods=['GET'])
