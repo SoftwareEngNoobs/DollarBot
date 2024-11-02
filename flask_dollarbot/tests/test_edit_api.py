@@ -10,7 +10,7 @@ app.register_blueprint(edit_bp)
 MOCK_USER_DATA = {
     "864914211": {
         "data": [
-            "17-May-2023,Transport,50.0"
+            "17-May-2023,Transport,50.0,$"
         ]
     }
 }

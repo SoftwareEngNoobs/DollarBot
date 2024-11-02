@@ -80,11 +80,14 @@ def delete_by_ids():
     """
     data = request.json
     user_id = data.get('user_id')
+    if user_id is None:
+        return jsonify({'error': 'User ID is required'}), 400
     ids_to_delete=data.get("ids_to_delete")
+    if  ids_to_delete is None:
+        return jsonify({"error": "Ids to delete are required"}), 400
     ids_to_delete.sort(reverse=True)
 
-    if not user_id:
-        return jsonify({'error': 'User ID is required'}), 400
+   
     if not ids_to_delete:
         return jsonify({'error': 'Ids to delete is required'}), 400
 
