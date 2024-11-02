@@ -18,11 +18,10 @@
 
 # DollarBot - Because your financial future deserves the best!
 
-You wake up, brew a fresh cup of coffee, and start your day. You're excited because today is the day you take control of your finances like never before. How? Say hello to DollarBot, your ultimate financial companion. With simple commands, it transforms your financial story into one of motivation, empowerment, and control. 
+You wake up, brew a fresh cup of coffee, and start your day. You're excited because today is the day you take control of your finances like never before. How? Say hello to DollarBot, your ultimate financial companion. With an easy-to-use interactive user-interface it transforms your financial story into one of motivation, empowerment, and control. 
 
-And the best part? DollarBot is your financial sidekick, available exclusively on Telegram. That means no matter where you are, it's there to assist you in recording your expenses seamlessly.
+And the best part? DollarBot is your financial sidekick, available on any Web Browser! That means no matter where you are, whether you have access to your phone or not, it'll always be there to assist you in recording your expenses seamlessly.
 
-<a href="https://www.canva.com/design/DAFxwU4ABIg/LqMkLeGUBhC__JmWmdkFiQ/watch?utm_content=DAFxwU4ABIg&utm_campaign=designshare&utm_medium=link&utm_source=editor">Click here for a video overview!!</a>
 
 <hr>
 <p align="center">
@@ -37,14 +36,14 @@ And the best part? DollarBot is your financial sidekick, available exclusively o
 
 ## Demo Video
 
-<a href="https://youtu.be/bAio20DZ_-I">https://youtu.be/bAio20DZ_-I</a>
+<a href="https://youtu.be/6OvkZq3S3wc">https://youtu.be/6OvkZq3S3wc</a>
 
 
 ## :money_with_wings: About DollarBot
 
-DollarBot is a user-friendly Telegram bot designed to simplify your daily expense recording on a local system effortlessly.
+### DollarBot is an easy-to-use user-friendly web application and a Telegram Bot designed to make recording and tracking your daily expenses simple and convenient, anytime and anywhere!!!
 
-With simple commands, this bot allows you to:
+#### With simple commands, this bot allows you to:
 
 📝 **Add/Record a new spending:** As you sip that morning coffee, effortlessly log your expenses, no matter how small or significant. Every expense adds up, and DollarBot ensures you don't miss a thing.
 
@@ -62,24 +61,27 @@ With simple commands, this bot allows you to:
 
 📈 **Predict future expenses:** Predict your next month's budget based on your current expenditure
 
+📤 **Export Options (CSV, PDF):** Export your spending data in CSV or PDF format for easy analysis. Ideal for importing into spreadsheets or sharing reports.
+
+💌 **Email Reports:** Automatically send your expense reports via email. Keep a backup or share your financial data quickly and easily.
+
 # :star: What's New?
 
-- **Machine Learning Predictions:** Implemented machine learning techniques for predictive analytics, enhancing the accuracy and efficiency of expense predictions.
-- **Email Notification Command:** Introduced a convenient send email command. When executed, this command automatically sends an email to the user containing detailed expenditure information.
-- **CSV Export Command:** Implemented the csv command to export expenditure details to a CSV file. Users can execute this command to efficiently save and manage their financial data.
-- **Weekly Expense Analysis:** Included a `weekly analysis` command to provide users with a comprehensive analysis of their expenses on a weekly basis.
-- **Monthly Expense Analysis:** Introduced a `monthly analysis` command, enabling users to gain insights into their spending patterns over the course of a month.
-- **Category Management:** Empowered users with the ability to manage expense categories. Users can add, edit, or delete categories according to their preferences.
-- **Recurring Expenses:** Added the functionality for users to track recurring expenses. This feature facilitates the management of regularly occurring financial commitments.
+- **A brand new web app:** A new web application has been developed that extends the capabilities of the Telegram bot, enabling new users to access the bot's features without needing the hassle of installing Telegram. This web app allows users to effortlessly track expenses from their phones or desktops through an intuitive user interface. It also provides users with the ability to view more detailed information at a glance through interactive visualizations.
+- **User Account Management:** We've finally introduced the feature of user accounts! Allowing users to sign-in and sign-out their accounts and maintain separate expense accounts.
+- **Cross Platform Integration:** Users of the Telegram Dollar Bot can continue enjoying all its features and seamlessly switch between the Dollar Bot website and the bot itself.
+- **Multi-Currency Support:** Log expenses in multiple currencies (USD, INR, EUR, etc.) and view all the data on one dashboard.
+- **Bulk Actions:** The Web App allows users to perform bulk actions and edit specific expenses without going through the hassle of typing out multiple commands on Telegram.
+- **Database Support:** User Login Data has been stored securely on SQL-Lite.
 - **Bug Fixes and Improved Flow:** Addressed numerous bugs and issues to enhance the overall stability and user experience of the application. The latest updates include fixes to issues related to the previous flow of the application, ensuring a smoother and more reliable user interaction. Our commitment to quality assurance and user satisfaction is reflected in these improvements.
 
-Are you a developer? <a href="https://github.com/tpanati/DollarBot/blob/main/README.md">Click here: For Developers and Future Contributors</a>
+Are you a developer? <a href="https://github.com/SoftwareEngNoobs/DollarBot/blob/release-1.0/README.md">Click here: For Developers and Future Contributors</a>
 
 # :rocket: Installation and Setup
 
 ## Pre-requisite: The Telegram Desktop App
 
-Since DollarBot is built on top of Telegram, you'll first need:
+Since DollarBot is also a Telegram bot, you'll need to setup:
 1. Download the Telegram Desktop Application <a href="https://desktop.telegram.org/">here.</a>
 ```https://desktop.telegram.org/```
 2. Create a Telegram account or Sign in.
@@ -90,9 +92,40 @@ Open up your terminal and let's get started:
 
 1. Clone this repository to your local system. 
 ```
-   git clone https://github.com/aditikilledar/dollar_bot_SE23/
+   git clone https://github.com/SoftwareEngNoobs/DollarBot/tree/release-1.0
 ```
-2. Start a terminal session in the directory where the project has been cloned. Run the following commands and follow the instructions on-screen to complete the installation.
+## The Frontend React Application
+1. To run the react web application on your local system first cd into the frontend directory:
+```
+cd frontend
+```
+2. Now run the command to install node.js on your local system by following the instructions on this website: <a href="https://nodejs.org/en">here</a>
+3. Once the installation is finished run the command to download all dependencies and libraries:
+```
+npm install
+```
+4. Start the frontend server by running the command:
+```
+npm start
+```
+
+## The Flask Backend Server
+1. To run the Flask server first download all the requirements that are present in the requirements.txt file in the root directory:
+```
+pip install -r requirements.txt
+```
+2. Next, cd into the flask_dollarbot directory:
+```
+cd flask_dollarbot
+```
+3. Run the command below to start the server:
+```
+python app.py
+```
+
+## To Run the Telegram Bot (Not Required if working only on the Web-App)
+
+1. Start a terminal session in the directory where the project has been cloned. Run the following commands and follow the instructions on-screen to complete the installation.
 ```
   chmod a+x setup.sh
   bash setup.sh
@@ -109,7 +142,7 @@ We've used <a href="https://www.cygwin.com/">Cygwin,</a> but there are more opti
 
 Additionally, find more hints on Cygwin installation <a href="https://stackoverflow.com/questions/6413377/is-there-a-way-to-run-bash-scripts-on-windows">here.</a>
 
-## Running DollarBot:
+## Running DollarBot Telegram Bot (Not Required if working only on the Web-App):
 
 Once you've executed setup.sh, and all dependencies have been installed, you can start running DollarBot by following these instructions.
 
@@ -153,10 +186,31 @@ To run the script automatically at startup / reboot, simply add the `.run_foreve
 
 # :information_desk_person: Use Cases
 
+Here's a quick overview of the frontend and the different functions the web-app can perform!
+
+### Login
+Allows the users to login to their existing Dollar Bot Accounts:
+![Screenshot 2024-11-01 at 11 31 55 PM](https://github.com/user-attachments/assets/a2e8a58e-93aa-4553-a5e0-b446c32741ff)
+
+### SignUp
+Allows the user to SignUp for a new Account and allows them to import data from their existing Telegram Dollar Bot!
+
+### Add Expenses
+Allows the user to add expenses seamlessly across different devices!
+
+### Edit Expense
+Allows users to select a specific expense, edit its current parameters, and update the details in the database without having to go through multiple commands.
+
+### Delete Expense
+Allows users to perform bulk Delete Operation without the hassle of typing multiple commands or making multiple edits.
+
+### Multi-Currency Support
+Using a dropdown menu the user can select the currencies they're more 
+
 Here's a quick overview of how each of the commands work. Simply enter /<command_name> into the Telegram chat and watch as the magic happens! 
 
 ### Menu
-View all the commands Dollarbot offers to manage your expenses
+View all the commands Dollarbot Telegram Bot offers to manage your expenses
 
 <p align="center"><img width="700" src="./docs/workflows/menu_command.gif"></p>
 It can be invoked by using `/menu` command.
@@ -260,22 +314,22 @@ It can be invoked by using `/monthly` command.
 # :construction: Road Map
 
 Our implementation has been tracked in a project board which can be viewed here -
-[DollarBot Developer board](https://github.com/users/tpanati/projects/2)
+[DollarBot Developer board](https://trello.com/invite/b/671fd0fafd4e84cdbbfa766d/ATTIa26bcec13fe6a0003f593090967efb8bF6975E59/se-project2-tracker)
 
 Some possible future enhancements are as follows:
-1.	**AI-Driven Financial Insights:** Integrate advanced generative AI algorithms to provide personalized financial insights and recommendations. Leverage machine learning to analyze spending patterns and offer proactive suggestions for optimizing expenses.
-2.	**Expense Sharing and Splitting:** Enable users to share expenses effortlessly with friends, family, or colleagues. Implement a feature that allows users to split bills and track shared expenses, making group financial management seamless.
-3.	**Cross-Platform Compatibility:** Develop setup scripts specifically for Windows users to ensure a smooth and hassle-free installation process on this platform. Expand DollarBot's accessibility to a broader user base by optimizing its performance on Windows operating systems.
-4.	**Natural Language Processing (NLP) Integration:** Enhance DollarBot's user experience by implementing Natural Language Processing (NLP) capabilities. Enable the bot to respond to casual conversation, making interactions more intuitive and user-friendly. Users can engage with DollarBot in a more conversational manner, improving overall usability.
-5.  **Integration with Financial APIs:** Integrate with popular financial APIs to fetch real-time transaction data from bank accounts and credit cards. This enhancement provides users with up-to-the-minute financial information, ensuring accuracy and completeness in their spending records.
-6.  **Multi-Currency Support:** Extend DollarBot's functionality to support multiple currencies, catering to users with diverse financial portfolios. This enhancement ensures accurate tracking and reporting for users dealing with expenses in different currencies.
-7.  **Smart Notifications and Alerts:** Implement intelligent notification features to alert users about budget limits, unusual spending patterns, or upcoming bills. These proactive notifications will empower users to make informed financial decisions in real-time.
-8.  **Secure Cloud Sync and Backup:** Implement a secure cloud sync and backup feature to ensure users' data is protected and accessible across devices. This enhancement provides users with peace of mind, knowing that their financial data is safely stored and can be easily recovered if needed.
+1.  **Implement Additional Features and Visualization Tools:** Enhance functionality by leveraging ReactJS libraries to provide users with additional data visualization options, enable multiple bulk transactions at once, and explore methods to make the web app more user-friendly and seamless.
+2.  **Expense Sharing and Splitting:** Enable users to share expenses effortlessly with friends, family, or colleagues. Implement a feature that allows users to split bills and track shared expenses, making group financial management seamless.
+3.  **Budget Limits and Alerts:** Option to set daily/monthly reminders and alert the user by mailing them if they cross these limits.
+4.	**AI-Driven Financial Insights:** Integrate advanced generative AI algorithms to provide personalized financial insights and recommendations. Leverage machine learning to analyze spending patterns and offer proactive suggestions for optimizing expenses.
+5.	**Financial Goal Setting:** Set short-term and long-term financial goals. Track progress with visual indicators and celebratory notifications.
+6.	**Natural Language Processing (NLP) Integration:** Enhance DollarBot's user experience by implementing Natural Language Processing (NLP) capabilities. Enable the bot to respond to casual conversation, making interactions more intuitive and user-friendly. Users can engage with DollarBot in a more conversational manner, improving overall usability.
+7.  **Integration with Financial APIs:** Integrate with popular financial APIs to fetch real-time transaction data from bank accounts and credit cards. This enhancement provides users with up-to-the-minute financial information, ensuring accuracy and completeness in their spending records.
+9.  **Smart Notifications and Alerts:** Implement intelligent notification features to alert users about budget limits, unusual spending patterns, or upcoming bills. These proactive notifications will empower users to make informed financial decisions in real-time.
 
 
 :heart: Acknowledgements
 ---
-We would like to thank Dr. Timothy Menzies for helping us understand the process of building a good Software Engineering project. We would also like to thank the teaching assistants San Gilson, Andre Lustosa, Xueqi (Sherry) Yang, Yasitha Rajapaksha, and Rahul Yedida for their support throughout the project.
+We would like to thank Dr. Timothy Menzies for helping us understand the process of building a good Software Engineering project. We would also like to thank the teaching assistants Liwen, Sam Gilson, Rishabh Jain, Andre Lustosa, Ishrak Hayet, and Amirali for their support throughout the project.
 
 
 :page_facing_up: License
@@ -283,13 +337,7 @@ We would like to thank Dr. Timothy Menzies for helping us understand the process
 This project is licensed under the terms of the MIT license. Please check [LICENSE](https://github.com/tpanati/DollarBot/blob/main/LICENSE) for more details.
 
 ## Contributors
-<table>
-  <tr>
-    <td align="center"><img src="https://avatars.githubusercontent.com/u/114872378?v=4" width="75px;" alt=""/><br /><sub><b>Harshavardhan Bandaru</b></sub></a></td>
-    <td align="center"><img src="https://avatars.githubusercontent.com/u/35067896?v=4" width="75px;" alt=""/><br /><sub><b>Vyshnavi Adusumeli</b></sub></a><br /></td>
-    <td align="center"><img src="https://avatars.githubusercontent.com/u/144171816?s=400&u=e9fb80d2e9acb2fc438881017b49e6d26720a50d&v=4" width="75px;" alt=""/><br /><sub><b>Tejaswini Panati</b></sub></a><br /></td>
-  </tr>
-</table>
+1. 
 
 # :calling: Support
 
