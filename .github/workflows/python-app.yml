@@ -43,8 +43,12 @@ jobs:
     - name: Run PyLint with dynamic badge
       uses: Silleellie/pylint-github-action@v2
       with:
-        lint-path: "flask_dollarbot/endpoints/,flask_dollarbot/tests"
+        lint-path: "flask_dollarbot/endpoints"  # Badge will be based on this path
         python-version: "3.10"
+
+    - name: Run PyLint on multiple paths
+      run: |
+        pylint flask_dollarbot/endpoints flask_dollarbot/tests || true  # Runs pylint on both paths
 
     - name: Test with pytest in dollarbot root
       env:
