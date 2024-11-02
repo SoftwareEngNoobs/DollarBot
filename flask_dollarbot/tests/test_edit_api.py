@@ -119,8 +119,8 @@ def test_edit_category(client, mocker):
         "user_id": "864914211",
         "selected_data": [
             "Date=17-May-2023",
-            "Category=Transport",
-            "Amount=50.0"
+            "Category=Groceries",
+            "Amount=400.0"
         ],
         "new_category": "Travel"
     })
