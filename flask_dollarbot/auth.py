@@ -23,12 +23,15 @@ def register_user():
     # Hash the password and create a new user
     hashed_password = generate_password_hash(data['password'], method='pbkdf2:sha256')
     if len(data['user_id'])>0:
-        new_user = User(user_id=data['user_id'],username=data['username'], password=hashed_password)
+        new_user = User(username=data['username'], password=hashed_password, telegram_id=data['user_id'])
     else:
         new_user = User(username=data['username'], password=hashed_password)    
     db.session.add(new_user)
     db.session.commit()
+    if new_user.telegram_id!=None:
+        return jsonify({'message': 'User registered successfully', 'user_id':new_user.telegram_id}), 201
     return jsonify({'message': 'User registered successfully', 'user_id':new_user.user_id}), 201
+        
 
 @auth_bp.route('/login', methods=['POST'])
 def login_user_endpoint():
@@ -36,7 +39,8 @@ def login_user_endpoint():
     user = User.query.filter_by(username=data['username']).first()
     if not user or not check_password_hash(user.password, data['password']):
         return jsonify({'message': 'Login failed'}), 401
-
+    if user.telegram_id!=None:
+        return jsonify({'message': 'User registered successfully', 'user_id':user.telegram_id}), 201
     return jsonify({'message': 'Login successful', 'user_id':user.user_id}), 200
 
 @auth_bp.route('/logout', methods=['GET'])
