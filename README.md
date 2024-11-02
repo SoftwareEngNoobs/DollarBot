@@ -34,7 +34,7 @@ And the best part? DollarBot is your financial sidekick, available on any Web Br
 
 ## Scorecard
 
-[Score card - Group 13](https://github.com/tpanati/DollarBot/blob/main/proj3/DollarBot_proj3_scorecard.csv)
+[Score card - Group 9](https://docs.google.com/document/d/1HRIEcZEZftQMgsl30W4LBVF9Q4Kj-WhWMT_pbpFhiy0/edit?tab=t.0)
 
 ## Demo Video
 
