@@ -62,3 +62,28 @@ def test_delete_by_ids_invalid_input_ids(client: FlaskClient):
     response = client.delete("/deletebyids", json={"user_id": "864914211"})
     assert response.status_code == 400
     assert response.json == {"error": "Ids to delete are required"}
+
+@patch("endpoints.helper.read_json")
+@patch("endpoints.helper.write_json")
+def test_delete_all_no_records(mock_write_json, mock_read_json, client: FlaskClient):
+    """Test deleting all records when user exists but has no records."""
+    mock_read_json.return_value = {"864914211": {"data": [], "budget": {"overall": "0", "category": {}}}}
+    response = client.delete("/delete_all", json={"user_id": "864914211"})
+    assert response.status_code == 200
+    assert response.json == {"message": "All records deleted successfully"}
+
+
+
+
+@patch("endpoints.helper.read_json")
+@patch("endpoints.helper.write_json")
+def test_delete_all_ensure_budget_reset(mock_write_json, mock_read_json, client: FlaskClient):
+    """Test that deleting all records resets the user's budget data."""
+    mock_read_json.return_value = {"864914211": {"data": ["record1"], "budget": {"overall": "100", "category": {"food": "50"}}}}
+    response = client.delete("/delete_all", json={"user_id": "864914211"})
+    assert response.status_code == 200
+    mock_write_json.assert_called_once()
+    user_data = mock_write_json.call_args[0][0]
+    assert user_data["864914211"]["budget"]["overall"] == "0"
+    assert user_data["864914211"]["budget"]["category"] == {}
+

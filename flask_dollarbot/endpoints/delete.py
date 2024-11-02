@@ -80,13 +80,15 @@ def delete_by_ids():
     """
     data = request.json
     user_id = data.get('user_id')
-    ids_to_delete=data.get("ids_to_delete")
-    ids_to_delete.sort(reverse=True)
-
     if not user_id:
         return jsonify({'error': 'User ID is required'}), 400
+    ids_to_delete=data.get("ids_to_delete")
     if not ids_to_delete:
-        return jsonify({'error': 'Ids to delete is required'}), 400
+        return jsonify({'error': 'Ids to delete are required'}), 400
+
+    ids_to_delete.sort(reverse=True)
+
+    
 
     user_list = helper.read_json()
     if str(user_id) in user_list:
