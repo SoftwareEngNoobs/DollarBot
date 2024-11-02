@@ -101,3 +101,11 @@ def test_add_single_invalid_date(client, mocker):
     })
     assert response.status_code == 400
     assert response.get_json() == {'error': 'Bad Request'}
+
+def test_validate_add_request_invalid_category():
+    assert validate_add_request("21837", str(datetime.today().date()), "120", "Random") == False
+
+def test_validate_add_request_invalid_amount():
+    assert validate_add_request("21837", str(datetime.today().date()), "0", "Random") == False
+    assert validate_add_request("21837", str(datetime.today().date()), "random", "Random") == False
+    assert validate_add_request("21837", str(datetime.today().date()), "-20", "Random") == False

@@ -32,6 +32,9 @@ const Signup = () => {
   const [importing, setImporting] = useState(true);
   let navigate = useNavigate();
 
+  // user_id can be null which means the user doesn't want to import data from telegram.
+  // If the user_id is specified it means that the user wants to import their telegram dollarbot data.
+  // This user_id will be set as their telegram_id in the database
   async function onSubmit(data: any) {
     axios
       .post(
@@ -39,7 +42,7 @@ const Signup = () => {
         {
           username: data.username,
           password: data.password,
-          user_id: data.user_id
+          user_id: data.user_id,
         },
         {
           headers: {
@@ -48,6 +51,7 @@ const Signup = () => {
         }
       )
       .then((resp) => {
+        // globalUserID is set by fetching it from the response after login
         localStorage.setItem("globalUserId", resp.data.user_id);
         navigate("/home");
       })
@@ -143,7 +147,25 @@ const Signup = () => {
                   >
                     Importing Data from Telegram?
                   </Link>
-                  <Tooltip content={<><Text fontSize="md" fontWeight="bold" justifyContent="center">How to fetch your UserID from Dollar Bot?</Text><br/>1. To find your UserID go to the telegram chat with Dollar Bot. <br/> 2. Type the command <strong>/reqUserID</strong> and copy-paste the contents of the reply in the userID field to import your data! </>} interactive>
+                  <Tooltip
+                    content={
+                      <>
+                        <Text
+                          fontSize="md"
+                          fontWeight="bold"
+                          justifyContent="center"
+                        >
+                          How to fetch your UserID from Dollar Bot?
+                        </Text>
+                        <br />
+                        1. To find your UserID go to the telegram chat with
+                        Dollar Bot. <br /> 2. Type the command{" "}
+                        <strong>/reqUserID</strong> and copy-paste the contents
+                        of the reply in the userID field to import your data!{" "}
+                      </>
+                    }
+                    interactive
+                  >
                     <Icon padding="3px 0 0 0">
                       <FaInfoCircle />
                     </Icon>

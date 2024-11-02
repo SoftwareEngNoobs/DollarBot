@@ -43,6 +43,9 @@ type expenseProps = {
   expense_currency: string;
 };
 
+// This function fetches the date, category and expense value from the text inputs and
+// sends a POST request to the Flask server to edit an existing record's details.
+
 const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
   const {
     handleSubmit,
@@ -84,6 +87,7 @@ const EditExpense = ({ onEditExpense, selectedExpense }: Props) => {
           },
         }
       );
+      // Since we allow the user to change any part of the transaction we make the calls for date, value and category.
       await axios.post(
         "http://127.0.0.1:5000/edit_date",
         {

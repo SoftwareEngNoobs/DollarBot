@@ -34,6 +34,8 @@ type Props = {
   onAddExpense?: (value: boolean) => void;
 };
 
+// This function fetches the date, category and expense value from the text inputs and sends a POST request to the Flask server.
+
 const AddExpense = ({ onAddExpense }: Props) => {
   const {
     handleSubmit,
@@ -48,6 +50,7 @@ const AddExpense = ({ onAddExpense }: Props) => {
       axios.post(
         "http://127.0.0.1:5000/add/add_single",
         {
+          // Global User ID is set during SignUp/SignIn
           user_id: localStorage.getItem("globalUserId"),
           amount: data.expenseValue,
           date: expDate,
@@ -108,7 +111,9 @@ const AddExpense = ({ onAddExpense }: Props) => {
             variant="subtle"
             margin="0 5px 0px 0"
             defaultValue={["dollar"]}
-            onValueChange={(value)=>{setSelectedCurrency(value.value[0])}}
+            onValueChange={(value) => {
+              setSelectedCurrency(value.value[0]);
+            }}
           >
             <SelectTrigger>
               <SelectValueText color="teal" placeholder="Select Action" />

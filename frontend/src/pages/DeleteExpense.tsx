@@ -33,6 +33,8 @@ type Props = {
   selectedExpense: string[];
 };
 
+// The function fetches the selected recordIDs and sends the list as a DELETE request to the flask server.
+
 const DeleteExpense = ({ onDeleteExpense, selectedExpense }: Props) => {
   const {
     handleSubmit,

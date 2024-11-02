@@ -59,3 +59,19 @@ def test_update_category(client, mocker):
     # Verify that deleteSpendCategories and addSpendCategories were called correctly
     helper.deleteSpendCategories.assert_called_once_with("Fun")
     helper.addSpendCategories.assert_called_once_with("Entertainment")
+
+def test_delete_nonexistent_category(client, mocker):
+    mock_categories = ["Groceries", "Utility"]
+    mocker.patch('endpoints.helper.getSpendCategories', return_value=mock_categories)
+    
+    response = client.delete('/', json={"category_name": "Fun"})
+    assert response.status_code == 404
+    assert json.loads(response.data) == {"error": "Category not found"}
+
+def test_update_nonexistent_category(client, mocker):
+    mock_categories = ["Groceries", "Utility"]
+    mocker.patch('endpoints.helper.getSpendCategories', return_value=mock_categories)
+    
+    response = client.post('/update', json={"existing_category_name": "Fun", "new_category_name": "Entertainment"})
+    assert response.status_code == 404
+    assert json.loads(response.data) == {"error": "Category not found"}

@@ -232,6 +232,7 @@ const Home = () => {
                 </SelectContent>
               </SelectRoot>
             </Container>
+            // Hacky Implementation of a Divider I'm sorry
             <Box
               divideY="2px"
               marginBottom="10px"
