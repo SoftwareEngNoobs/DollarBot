@@ -195,18 +195,28 @@ Allows the users to login to their existing Dollar Bot Accounts:
 
 ### SignUp
 Allows the user to SignUp for a new Account and allows them to import data from their existing Telegram Dollar Bot!
+![Screenshot 2024-11-01 at 11 33 21 PM](https://github.com/user-attachments/assets/3aae03d4-5ac5-482d-b041-a889926d684f)
+
 
 ### Add Expenses
 Allows the user to add expenses seamlessly across different devices!
+![Screenshot 2024-11-01 at 11 35 02 PM](https://github.com/user-attachments/assets/096286a8-9bb4-4c5e-a7ba-127815346a5f)
+
 
 ### Edit Expense
 Allows users to select a specific expense, edit its current parameters, and update the details in the database without having to go through multiple commands.
+![Screenshot 2024-11-01 at 11 47 21 PM](https://github.com/user-attachments/assets/98d690b9-bef2-45cf-b40a-0c6149621f70)
+
 
 ### Delete Expense
 Allows users to perform bulk Delete Operation without the hassle of typing multiple commands or making multiple edits.
+![Screenshot 2024-11-01 at 11 47 33 PM](https://github.com/user-attachments/assets/a281b197-94a8-444c-ac65-c7f88bef01f3)
+
 
 ### Multi-Currency Support
-Using a dropdown menu the user can select the currencies they're more 
+Using a dropdown menu the user can select and log expenses in multiple currencies (USD, INR, EUR, etc.).
+![Screenshot 2024-11-01 at 11 38 09 PM](https://github.com/user-attachments/assets/a3702f33-91ab-4d05-b954-9f0f50fe7d3e)
+
 
 Here's a quick overview of how each of the commands work. Simply enter /<command_name> into the Telegram chat and watch as the magic happens! 
 
@@ -338,8 +348,10 @@ We would like to thank Dr. Timothy Menzies for helping us understand the process
 This project is licensed under the terms of the MIT license. Please check [LICENSE](https://github.com/tpanati/DollarBot/blob/main/LICENSE) for more details.
 
 ## Contributors
-1. 
+1. Varun Kakkalameli(vkakkal)
+2. Krithika Ragothaman(kragoth)
+3. Mahim Dashora(mdashor)
 
 # :calling: Support
 
-For any support, email us at `vadusum@ncsu.edu`
+For any support, email us at `vkakkal@ncsu.edu`
