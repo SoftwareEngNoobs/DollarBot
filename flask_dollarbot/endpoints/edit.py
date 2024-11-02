@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Create a Blueprint for editing expenses
 edit_bp = Blueprint('edit', __name__)
-
+MAX_AMOUNT_LIMIT = 1000000  # Example threshold for large amounts
 @edit_bp.route('/edit_cost', methods=['POST'])
 def edit_cost():
     """
@@ -29,40 +29,58 @@ def edit_cost():
     selected_data = data.get('selected_data')
     new_cost = data.get('new_cost')
     
+    # Basic input validation for user_id, selected_data, and new_cost
     if not user_id or not selected_data or not new_cost:
         return jsonify({'error': 'Invalid input'}), 400
 
-    user_list = helper.read_json()
-    chat_id = user_id
-    data_edit = helper.getUserHistory(chat_id)
-   
+    # Validate the amount and ensure it doesn't exceed a predefined limit
+    try:
+        if float(new_cost) > MAX_AMOUNT_LIMIT:
+            return jsonify({'error': 'Amount exceeds limit'}), 400
+    except ValueError:
+        return jsonify({'error': 'Invalid amount'}), 400
+
     if helper.validate_entered_amount(new_cost) == 0:
         return jsonify({'error': 'Invalid amount'}), 400
-    if data_edit is None :
-        return jsonify({"error": "user is missing or invalid"}),400
-    for i in range(len(data_edit)):
-        print(data_edit[i])
-        user_data = data_edit[i].split(",")
+
+    # Fetch user data and validate user existence
+    user_list = helper.read_json()
+    data_edit = helper.getUserHistory(user_id)
+    if data_edit is None:
+        return jsonify({"error": "user is missing or invalid"}), 400
+
+    # Extract and validate date format
+    try:
         selected_date = selected_data[0].split("=")[1]
-        selected_category = selected_data[1].split("=")[1]
-        selected_amount = selected_data[2].split("=")[1]
-        if len(user_data)>=4:
-            selected_currency = user_data[3]
-        else:
-            selected_currency = "dollar"
-       
+        datetime.strptime(selected_date, helper.getDateFormat())
+    except (IndexError, ValueError):
+        return jsonify({'error': 'Invalid date format'}), 400
+
+    # Extract category and amount
+    selected_category = selected_data[1].split("=")[1]
+    selected_amount = selected_data[2].split("=")[1]
+    
+    category_found = False  # Track if category is found
+
+    for i in range(len(data_edit)):
+        user_data = data_edit[i].split(",")
+        selected_currency = user_data[3] if len(user_data) >= 4 else "dollar"
+
         if (
             user_data[0] == selected_date and
             user_data[1] == selected_category and
             user_data[2] == selected_amount
         ):
             data_edit[i] = f"{selected_date},{selected_category},{new_cost},{selected_currency}"
-            print(f"data edit i {data_edit[i]}")
+            category_found = True  # Mark category as found
             break
 
-    user_list[str(chat_id)]["data"] = data_edit
+    if not category_found:
+        return jsonify({'error': 'Category not found'}), 404
+
+    # Update user data and write changes
+    user_list[str(user_id)]["data"] = data_edit
     helper.write_json(user_list)
-    print(f"Final update {user_list}")
 
     return jsonify({'message': 'Cost updated successfully'}), 200
 
