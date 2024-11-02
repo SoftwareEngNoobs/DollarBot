@@ -42,10 +42,8 @@ const AddExpense = ({ onAddExpense }: Props) => {
   } = useForm();
   const [expDate, setExpDate] = useState("");
   const [selectedCurrency, setSelectedCurrency] = useState("dollar");
-  console.log(localStorage.getItem("globalUserId"));
 
   async function onSubmit(data: any) {
-    console.log(localStorage.getItem("globalUserId"));
     if (expDate != "") {
       axios.post(
         "http://127.0.0.1:5000/add/add_single",
