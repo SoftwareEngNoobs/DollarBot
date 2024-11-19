@@ -169,6 +169,21 @@ def command_add(message):
     """
     add.run(message, bot)
 
+# defines how the /reqUserID command has to be handled/processed
+@bot.message_handler(commands=["reqUserID"])
+def command_reqUserID(message):
+    """
+    command_reqUserID(message) returns the UserID of the telegram chat to use it for importing
+    data into the web-app. 
+    """
+    user_id = message.chat.id
+    text_msg = (
+        (f"Here's your UserID: {user_id} \n"
+         "Use this ID to import your data into our web-app! \n")
+    )
+    bot.send_message(user_id,text_msg)
+    return True
+
 # defines how the /weekly command has to be handled/processed
 @bot.message_handler(commands=["weekly"])
 def command_weekly(message):

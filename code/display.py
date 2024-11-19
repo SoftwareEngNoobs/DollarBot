@@ -103,7 +103,8 @@ def display_total(message, bot):
         total_text, total_dict = calculate_spendings(queryResult)
         monthly_budget = helper.getCategoryBudget(chat_id)
         print("Print Total Spending", total_text)
-        print("Print monthly budget", monthly_budget)
+        if monthly_budget!=None:
+            print("Print monthly budget", monthly_budget)
 
         spending_text = ""
         if len(total_text) == 0:
@@ -117,8 +118,9 @@ def display_total(message, bot):
             spend_total_str="<pre>"+ tabulate(table, headers='firstrow')+"</pre>"
             bot.send_message(chat_id, spending_text)
             bot.send_message(chat_id, spend_total_str, parse_mode="HTML")
-            graphing.visualize(total_text, monthly_budget)
-            bot.send_photo(chat_id, photo=open("expenditure.png", "rb"))
+            if monthly_budget!=None:
+                graphing.visualize(total_text, monthly_budget)
+                bot.send_photo(chat_id, photo=open("expenditure.png", "rb"))
     except Exception as e:
         logging.exception(str(e))
         bot.reply_to(message, str(e))
